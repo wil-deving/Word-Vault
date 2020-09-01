@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.gmail.wil.myownvocabulary.db.DatabaseAdapter
 import com.gmail.wil.myownvocabulary.R
+import com.gmail.wil.myownvocabulary.model.ItemVocabulary
 import kotlinx.android.synthetic.main.activity_add_meaning.*
 
 class AddMeaningActivity : AppCompatActivity() {
@@ -19,8 +20,8 @@ class AddMeaningActivity : AppCompatActivity() {
     }
 
     fun finalizar(view: View) {
-        val nameWord = etNameWord!!.text.toString()
-        db!!.addWord(nameWord)
+        val itemVocabulary = ItemVocabulary(etNameWord!!.text.toString(), 0)
+        db!!.addWord(itemVocabulary.name_word, itemVocabulary.learned)
         finish()
     }
 

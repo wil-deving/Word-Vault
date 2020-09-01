@@ -26,15 +26,16 @@ class DatabaseAdapter(context: Context) {
         databaseHelper.close()
     }
 
-    fun addWord(name: String): Long {
+    fun addWord(name: String, learned: Int): Long {
         val contentValues = ContentValues()
         //contentValues.put(Constants.ID_WORD, id)
-        contentValues.put(Constants.NAME_WORD, name)
+        contentValues.put(Constants.VOCABULARY_NAME_ITEM, name)
+        contentValues.put(Constants.VOCABULARY_LEARNED_ITEM, learned)
         //utilizar los metodos de android de insert, update, etc.. aunque tambien se puede
         //hacer de la manera tradicional con db.exeSQL(INSEET....)
         //contentValues valores temporales de atributos cargado en Constants
         //indicamos la tabla a la cual haremos en insert
-        return db!!.insert(Constants.WORD_TABLE, null, contentValues)
+        return db!!.insert(Constants.ITEMS_VOCABULARY_TABLE, null, contentValues)
     }
 
 //    fun actualizarPersona(id: Long, nombre: String, telefono: Long,
@@ -62,27 +63,47 @@ class DatabaseAdapter(context: Context) {
 
 
     //el objeto del tipo Cursor es una tabla en formato kt SQL
-    fun getAllWords(): Cursor {
+    fun getAllItemsVocabulary(): Cursor {
         //para hacer consultas utilizamos el metodo query
         //en sQLIte no hay el * debemos poner todos los campos y colocarlos en un array of
-        return db!!.query(Constants.WORD_TABLE,
-            arrayOf(Constants.ID, Constants.NAME_WORD), null, null, null, null, null)
+        //return db!!.query(Constants.ITEM_VOCABULARY_TABLE,
+            //arrayOf(Constants.ID, Constants.NAME_ITEM, Constants.LEARNED_ITEM), null, null, null, null, null)
+
+        val query =
+            " SELECT ${Constants.VOCABULARY_ID_ITEM}, ${Constants.VOCABULARY_NAME_ITEM}, " +
+            " ${Constants.VOCABULARY_LEARNED_ITEM} " +
+            " FROM  ${Constants.ITEMS_VOCABULARY_TABLE} " +
+            " WHERE ${Constants.VOCABULARY_LEARNED_ITEM} = 0 "
+
+        val data = db!!.rawQuery(query,null)
+        return data
     }
 
     //clase interna, herada de SQLite para acceder a la sintax de SQLite
     //creara la bd dbpersonas.db
-    private class DictionariesDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "dbdictionaries.db", null, 1) {
+    private class DictionariesDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "dbvocabularies.db", null, 1) {
 
         override fun onCreate(db: SQLiteDatabase) {
             //crear la tabla llamando los atributos de la clase object de Constants
             //para ejecutar consultas
-            db.execSQL("CREATE TABLE ${Constants.WORD_TABLE} (" +
-                    "${Constants.ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "${Constants.NAME_WORD} TEXT NOT NULL) ")
+            db.execSQL(
+                "CREATE TABLE ${Constants.ITEMS_VOCABULARY_TABLE} (" +
+                    "${Constants.VOCABULARY_ID_ITEM} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "${Constants.VOCABULARY_NAME_ITEM} TEXT NOT NULL, " +
+                    "${Constants.VOCABULARY_LEARNED_ITEM} INTEGER )"
+            )
+            db.execSQL(
+                "CREATE TABLE ${Constants.MEANINGS_TABLE} (" +
+                    "${Constants.MEANING_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "${Constants.MEANING_VOCABULARY_ID_ITEM_} INTEGER, " +
+                    "${Constants.MEANING_DESC_ONE} TEXT NOT NULL, " +
+                    "${Constants.MEANING_DESC_TWO} TEXT NOT NULL )"
+            )
         }
 
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-            db.execSQL("DROP TABLE IF EXISTS ${Constants.WORD_TABLE}")
+            db.execSQL("DROP TABLE IF EXISTS ${Constants.ITEMS_VOCABULARY_TABLE}")
+            db.execSQL("DROP TABLE IF EXISTS ${Constants.MEANINGS_TABLE}")
             onCreate(db)
         }
     }

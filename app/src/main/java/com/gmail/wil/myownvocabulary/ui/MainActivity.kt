@@ -77,23 +77,20 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     }
 
     fun cargarDatosLista() {
-        /*tenemos un arraylist de id`s en ids, obtenemos toas las personas
-        * devolvemos un cursos de todas las personas, ocultamos ll si encontro un registro
-        * minimo, */
         ids.clear()
         adaptadorLista!!.eliminarTodo()
-
-        val cursor = db!!.getAllWords()
+        val cursor = db!!.getAllItemsVocabulary()
         if (cursor.moveToFirst()) {
             tvDatos.setText("SI hay datos")
+            do {
+                val idItemVoc = cursor.getInt(0)
+                val nameItemVoc = cursor.getString(1)
+                val learnedVoc = cursor.getInt(2).toString()
+                adaptadorLista!!.adicionarItem("r1", nameItemVoc, learnedVoc)
+            } while (cursor.moveToNext())
         } else {
             tvDatos.setText("NO hay datos")
         }
-
-        adaptadorLista!!.adicionarItem("WWWWWW111", "WWWW")
-        adaptadorLista!!.adicionarItem("WWWWWW111", "WWWW")
-        adaptadorLista!!.adicionarItem("WWWWWW111", "WWWW")
-        adaptadorLista!!.adicionarItem("WWWWWW111", "WWWW")
         adaptadorLista!!.notifyDataSetChanged()
     }
 
