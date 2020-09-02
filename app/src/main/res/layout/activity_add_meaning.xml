@@ -75,6 +75,7 @@
             />
 
         <EditText
+            android:id="@+id/etMeaningOne"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
@@ -89,6 +90,7 @@
             />
 
         <TextView
+            android:id="@+id/tvRepeatMeaning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Repita el significado:"
@@ -102,6 +104,7 @@
             />
 
         <EditText
+            android:id="@+id/etMeaningTwo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
@@ -124,10 +127,12 @@
             android:weightSum="12">
 
             <Button
+                android:id="@+id/btnAnotherMeaning"
                 android:layout_width="0dp"
                 android:layout_weight="6"
                 android:layout_height="wrap_content"
-                android:text="Otro significado"/>
+                android:text="Otro significado"
+                android:onClick="saveMeaning"/>
 
             <Button
                 android:layout_width="0dp"

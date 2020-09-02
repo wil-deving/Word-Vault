@@ -26,16 +26,20 @@ class DatabaseAdapter(context: Context) {
         databaseHelper.close()
     }
 
-    fun addWord(name: String, learned: Int): Long {
+    fun addWord(idItem: String, name: String, learned: Int): Long {
         val contentValues = ContentValues()
-        //contentValues.put(Constants.ID_WORD, id)
+        contentValues.put(Constants.VOCABULARY_ID_ITEM, idItem)
         contentValues.put(Constants.VOCABULARY_NAME_ITEM, name)
         contentValues.put(Constants.VOCABULARY_LEARNED_ITEM, learned)
-        //utilizar los metodos de android de insert, update, etc.. aunque tambien se puede
-        //hacer de la manera tradicional con db.exeSQL(INSEET....)
-        //contentValues valores temporales de atributos cargado en Constants
-        //indicamos la tabla a la cual haremos en insert
         return db!!.insert(Constants.ITEMS_VOCABULARY_TABLE, null, contentValues)
+    }
+
+    fun addMeaning(idItemVocabulary: Int, descOne: String, descTwo: String) : Long {
+        val contentValues = ContentValues()
+        contentValues.put(Constants.MEANING_VOCABULARY_ID_ITEM, idItemVocabulary)
+        contentValues.put(Constants.MEANING_DESC_ONE, descOne)
+        contentValues.put(Constants.MEANING_DESC_TWO, descTwo)
+        return db!!.insert(Constants.MEANINGS_TABLE, null, contentValues)
     }
 
 //    fun actualizarPersona(id: Long, nombre: String, telefono: Long,
@@ -79,6 +83,14 @@ class DatabaseAdapter(context: Context) {
         return data
     }
 
+    fun getMeaningsByItem(idItemVocabulary: Int) : Cursor {
+        val query =
+            " SELECT ${Constants.MEANING_DESC_ONE} " +
+            " FROM ${Constants.MEANINGS_TABLE} "
+        val data = db!!.rawQuery(query,null)
+        return data
+    }
+
     //clase interna, herada de SQLite para acceder a la sintax de SQLite
     //creara la bd dbpersonas.db
     private class DictionariesDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "dbvocabularies.db", null, 1) {
@@ -88,14 +100,14 @@ class DatabaseAdapter(context: Context) {
             //para ejecutar consultas
             db.execSQL(
                 "CREATE TABLE ${Constants.ITEMS_VOCABULARY_TABLE} (" +
-                    "${Constants.VOCABULARY_ID_ITEM} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "${Constants.VOCABULARY_ID_ITEM} TEXT PRIMARY KEY, " +
                     "${Constants.VOCABULARY_NAME_ITEM} TEXT NOT NULL, " +
                     "${Constants.VOCABULARY_LEARNED_ITEM} INTEGER )"
             )
             db.execSQL(
                 "CREATE TABLE ${Constants.MEANINGS_TABLE} (" +
                     "${Constants.MEANING_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "${Constants.MEANING_VOCABULARY_ID_ITEM_} INTEGER, " +
+                    "${Constants.MEANING_VOCABULARY_ID_ITEM} INTEGER, " +
                     "${Constants.MEANING_DESC_ONE} TEXT NOT NULL, " +
                     "${Constants.MEANING_DESC_TWO} TEXT NOT NULL )"
             )

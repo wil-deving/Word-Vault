@@ -13,7 +13,7 @@ object Constants {
     val MEANINGS_TABLE = "meanings"
     // COLUMNS FOR MEANINGS
     val MEANING_ID = "_id"
-    val MEANING_VOCABULARY_ID_ITEM_ = "iditemvocabulary"
+    val MEANING_VOCABULARY_ID_ITEM = "iditemvocabulary"
     val MEANING_DESC_ONE = "descriptionone"
     val MEANING_DESC_TWO = "descriptiontwo"
 

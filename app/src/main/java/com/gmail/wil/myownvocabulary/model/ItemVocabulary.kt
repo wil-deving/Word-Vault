@@ -1,4 +1,6 @@
 package com.gmail.wil.myownvocabulary.model
 
-class ItemVocabulary(val name_word: String = "", val learned: Int = 0) {
+class ItemVocabulary(val id_item: String,
+                     val name_item: String = "",
+                     val learned_item: Int = 0) {
 }
