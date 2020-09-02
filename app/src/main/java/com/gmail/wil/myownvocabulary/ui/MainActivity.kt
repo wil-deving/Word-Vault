@@ -78,6 +78,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         chargeAdapterList(getDataItems("all"))
     }
 
+    override fun onStop() {
+        super.onStop()
+        db!!.cerrar()
+    }
+
     fun getDataItems(listFilter: String) : ArrayList<ItemVocabulary> {
         var listItemsVocabulary = ArrayList<ItemVocabulary>()
         var cursor: Cursor? = null
@@ -107,15 +112,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         adaptadorLista!!.notifyDataSetChanged()
     }
 
-    override fun onStop() {
-        super.onStop()
-        db!!.cerrar()
-    }
-
     override fun onItemClick(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-        //val intent = Intent(this, DetalleActivity::class.java)
-        //intent.putExtra("id", ids[i])
-        //startActivity(intent)
+        val intent = Intent(this, MeaningsListActivity::class.java)
+        intent.putExtra("id_item_vocabulary", ids[i])
+        startActivity(intent)
     }
 
     private fun expandFAB() {

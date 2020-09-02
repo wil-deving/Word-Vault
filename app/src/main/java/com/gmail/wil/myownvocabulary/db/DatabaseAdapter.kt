@@ -34,7 +34,7 @@ class DatabaseAdapter(context: Context) {
         return db!!.insert(Constants.ITEMS_VOCABULARY_TABLE, null, contentValues)
     }
 
-    fun addMeaning(idItemVocabulary: Int, descOne: String, descTwo: String) : Long {
+    fun addMeaning(idItemVocabulary: String, descOne: String, descTwo: String) : Long {
         val contentValues = ContentValues()
         contentValues.put(Constants.MEANING_VOCABULARY_ID_ITEM, idItemVocabulary)
         contentValues.put(Constants.MEANING_DESC_ONE, descOne)
@@ -99,10 +99,11 @@ class DatabaseAdapter(context: Context) {
         return data
     }
 
-    fun getMeaningsByItem(idItemVocabulary: Int) : Cursor {
+    fun getMeaningsByItem(idItemVocabulary: String = "") : Cursor {
         val query =
             " SELECT ${Constants.MEANING_DESC_ONE} " +
-            " FROM ${Constants.MEANINGS_TABLE} "
+            " FROM ${Constants.MEANINGS_TABLE} " +
+            " WHERE ${Constants.MEANING_VOCABULARY_ID_ITEM} = '${idItemVocabulary}' "
         val data = db!!.rawQuery(query,null)
         return data
     }
@@ -123,7 +124,7 @@ class DatabaseAdapter(context: Context) {
             db.execSQL(
                 "CREATE TABLE ${Constants.MEANINGS_TABLE} (" +
                     "${Constants.MEANING_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "${Constants.MEANING_VOCABULARY_ID_ITEM} INTEGER, " +
+                    "${Constants.MEANING_VOCABULARY_ID_ITEM} TEXT NOT NULL, " +
                     "${Constants.MEANING_DESC_ONE} TEXT NOT NULL, " +
                     "${Constants.MEANING_DESC_TWO} TEXT NOT NULL )"
             )

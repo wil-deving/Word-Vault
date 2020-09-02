@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView
+        android:id="@+id/tvDatosMean"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="MEanings" />
+
+    <ListView
+        android:id="@+id/lvMeaningsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+    </ListView>
+
+</LinearLayout>
