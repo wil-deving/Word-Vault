@@ -70,14 +70,30 @@ class DatabaseAdapter(context: Context) {
     fun getAllItemsVocabulary(): Cursor {
         //para hacer consultas utilizamos el metodo query
         //en sQLIte no hay el * debemos poner todos los campos y colocarlos en un array of
-        //return db!!.query(Constants.ITEM_VOCABULARY_TABLE,
-            //arrayOf(Constants.ID, Constants.NAME_ITEM, Constants.LEARNED_ITEM), null, null, null, null, null)
+        return db!!.query(Constants.ITEMS_VOCABULARY_TABLE,
+            arrayOf(Constants.VOCABULARY_ID_ITEM,
+                Constants.VOCABULARY_NAME_ITEM,
+                Constants.VOCABULARY_LEARNED_ITEM),
+            null, null, null, null, null)
+    }
 
+    fun getItemsVocabularyToLearn(): Cursor {
         val query =
             " SELECT ${Constants.VOCABULARY_ID_ITEM}, ${Constants.VOCABULARY_NAME_ITEM}, " +
-            " ${Constants.VOCABULARY_LEARNED_ITEM} " +
-            " FROM  ${Constants.ITEMS_VOCABULARY_TABLE} " +
-            " WHERE ${Constants.VOCABULARY_LEARNED_ITEM} = 0 "
+                    " ${Constants.VOCABULARY_LEARNED_ITEM} " +
+                    " FROM  ${Constants.ITEMS_VOCABULARY_TABLE} " +
+                    " WHERE ${Constants.VOCABULARY_LEARNED_ITEM} = 0 "
+
+        val data = db!!.rawQuery(query,null)
+        return data
+    }
+
+    fun getItemsVocabularyLearned(): Cursor {
+        val query =
+            " SELECT ${Constants.VOCABULARY_ID_ITEM}, ${Constants.VOCABULARY_NAME_ITEM}, " +
+                    " ${Constants.VOCABULARY_LEARNED_ITEM} " +
+                    " FROM  ${Constants.ITEMS_VOCABULARY_TABLE} " +
+                    " WHERE ${Constants.VOCABULARY_LEARNED_ITEM} = 1 "
 
         val data = db!!.rawQuery(query,null)
         return data

@@ -1,6 +1,7 @@
 package com.gmail.wil.myownvocabulary.ui
 
 import android.content.Intent
+import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,14 +11,15 @@ import android.widget.AdapterView
 import android.widget.FrameLayout
 import com.gmail.wil.myownvocabulary.R
 import com.gmail.wil.myownvocabulary.db.DatabaseAdapter
-import com.gmail.wil.myownvocabulary.listsAdapter.WordsListAdapter
+import com.gmail.wil.myownvocabulary.listsAdapter.VocabularyListAdapter
+import com.gmail.wil.myownvocabulary.model.ItemVocabulary
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fab_main_opt_layout.*
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     // Variables to list words
-    private var adaptadorLista: WordsListAdapter? = null
-    private val ids = ArrayList<Long>()
+    private var adaptadorLista: VocabularyListAdapter? = null
+    private val ids = ArrayList<String>()
 
     // Variables to connect DB
     private var db: DatabaseAdapter? = null
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         setContentView(R.layout.activity_main)
         // building list words
         lvVocabularyList!!.onItemClickListener = this
-        adaptadorLista = WordsListAdapter(this)
+        adaptadorLista = VocabularyListAdapter(this)
         lvVocabularyList!!.adapter = adaptadorLista
         registerForContextMenu(lvVocabularyList)
 
@@ -73,23 +75,34 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     override fun onStart() {
         super.onStart()
         db!!.abrir()
-        cargarDatosLista()
+        chargeAdapterList(getDataItems("all"))
     }
 
-    fun cargarDatosLista() {
+    fun getDataItems(listFilter: String) : ArrayList<ItemVocabulary> {
+        var listItemsVocabulary = ArrayList<ItemVocabulary>()
+        var cursor: Cursor? = null
+        if (listFilter == "all") cursor = db!!.getAllItemsVocabulary()
+        if (listFilter == "tolearn") cursor = db!!.getItemsVocabularyToLearn()
+        if (listFilter == "learned") cursor = db!!.getItemsVocabularyLearned()
+        if (cursor!!.moveToFirst()) {
+            do {
+                val itemVocabulary = ItemVocabulary(cursor.getString(0),
+                    cursor.getString(1), cursor.getInt(2))
+                listItemsVocabulary.add(itemVocabulary)
+            } while (cursor.moveToNext())
+        }
+        return listItemsVocabulary
+    }
+
+    fun chargeAdapterList(list: ArrayList<ItemVocabulary>) {
+        var idResourceImage = R.drawable.ic_baseline_spellcheck_24
         ids.clear()
         adaptadorLista!!.eliminarTodo()
-        val cursor = db!!.getAllItemsVocabulary()
-        if (cursor.moveToFirst()) {
-            tvDatos.setText("SI hay datos")
-            do {
-                val idItemVoc = cursor.getInt(0)
-                val nameItemVoc = cursor.getString(1)
-                val learnedVoc = cursor.getInt(2).toString()
-                adaptadorLista!!.adicionarItem("r1", nameItemVoc, learnedVoc)
-            } while (cursor.moveToNext())
-        } else {
-            tvDatos.setText("NO hay datos")
+        for (item in list) {
+            if (item.learned_item == 1) idResourceImage = R.drawable.ic_baseline_spellcheck_24
+            else idResourceImage = R.drawable.ic_baseline_priority_high_24
+            adaptadorLista!!.adicionarItem(idResourceImage, item.name_item, "")
+            ids.add(item.id_item)
         }
         adaptadorLista!!.notifyDataSetChanged()
     }

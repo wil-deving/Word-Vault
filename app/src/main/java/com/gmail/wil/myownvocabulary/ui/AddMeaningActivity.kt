@@ -25,6 +25,9 @@ class AddMeaningActivity : AppCompatActivity() {
             etNameWord!!.text.toString(),
             0)
         db!!.addWord(itemVocabulary.id_item, itemVocabulary.name_item, itemVocabulary.learned_item)
+
+
+
         finish()
     }
 
