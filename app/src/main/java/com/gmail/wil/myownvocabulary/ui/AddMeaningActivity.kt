@@ -13,6 +13,9 @@ import kotlinx.android.synthetic.main.activity_add_meaning.*
 class AddMeaningActivity : AppCompatActivity() {
     private var db: DatabaseAdapter? = null
 
+    private var firstSave = true
+    private var idItemVoc = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_meaning)
@@ -22,37 +25,60 @@ class AddMeaningActivity : AppCompatActivity() {
     }
 
     fun finalizar(view: View) {
-        val idNewItemV = randomAlphanumericString()
-        val itemVocabulary = ItemVocabulary(idNewItemV,
-            etNameWord!!.text.toString(),
-            0)
-        db!!.addWord(itemVocabulary.id_item, itemVocabulary.name_item, itemVocabulary.learned_item)
 
-        db!!.addMeaning(idNewItemV,
-            etMeaningOne!!.text.toString(),
-            etMeaningTwo!!.text.toString())
-
-        finish()
-    }
-
-    fun saveMeaning () {
-//        val desc1 = etMeaningOne!!.text.toString()
-//        val desc2 = etMeaningTwo!!.text.toString()
-
-        //Toast.makeText(this, "PREss", Toast.LENGTH_SHORT).show()
-//
-        //db!!.addMeaning("IdItem1", "Hola", "Chau")
-        //val cursor = db!!.getMeaningsByItem(0)
-//        if (cursor.moveToFirst()) {
-//            do {
-//                val meaning = cursor.getString(0)
-//                tvRepeatMeaning.text = meaning
-//            } while (cursor.moveToNext())
+        // validacion para campos
+//        if (etNameWord.text.toString() != null && etNameWord.text.toString() != "") {
+//            Toast.makeText(this, "ESTA BIEN", Toast.LENGTH_SHORT).show()
 //        } else {
-//            tvRepeatMeaning.text = "No hay nada"
+//            Toast.makeText(this, "ESTA MAL", Toast.LENGTH_SHORT).show()
 //        }
 
+
+        // todo trabaja tranquilo pero modularizar
+        if (firstSave) {
+            // validar campo palabra
+            val idNewItemV = randomAlphanumericString()
+            val itemVocabulary = ItemVocabulary(idNewItemV,
+                etNameWord!!.text.toString(),
+                0)
+            db!!.addWord(itemVocabulary.id_item, itemVocabulary.name_item, itemVocabulary.learned_item)
+
+            val idNewMeaning = randomAlphanumericString()
+            db!!.addMeaning(idNewMeaning, idNewItemV,
+                etMeaningOne!!.text.toString(),
+                etMeaningTwo!!.text.toString())
+            finish()
+        } else {
+            finish()
+        }
+
+
         //finish()
+    }
+
+    fun saveMeaning (view: View) {
+
+        if (firstSave) {
+            // solo la primera vez creara un codigo alfanumerico
+            idItemVoc = randomAlphanumericString()
+
+            // At first create a word
+            val itemVocabulary = ItemVocabulary(idItemVoc,
+                etNameWord!!.text.toString(),
+                0)
+            db!!.addWord(itemVocabulary.id_item, itemVocabulary.name_item,
+                itemVocabulary.learned_item)
+
+            firstSave = false
+            // deshabilitar et de la palabra
+            etNameWord.isEnabled = false
+        }
+        val idNewMeaning = randomAlphanumericString()
+        db!!.addMeaning(idNewMeaning, idItemVoc,
+            etMeaningOne!!.text.toString(),
+            etMeaningTwo!!.text.toString())
+        etMeaningOne.setText("")
+        etMeaningTwo.setText("")
 
     }
 

@@ -4,8 +4,7 @@
     <color name="colorPrimaryDark">#e94822</color>
     <color name="colorAccent">#35d0ba</color>
 
-    <color name="colorButtonNavigationView">#fff2e5</color>
-    <color name="colorSpinner">#ecb390</color>
+    <color name="colorPrimaryLight">#fff2e5</color>
     <color name="colorWhite">#fff</color>
     <color name="colorBlack">#000</color>
 </resources>

@@ -34,8 +34,10 @@ class DatabaseAdapter(context: Context) {
         return db!!.insert(Constants.ITEMS_VOCABULARY_TABLE, null, contentValues)
     }
 
-    fun addMeaning(idItemVocabulary: String, descOne: String, descTwo: String) : Long {
+    fun addMeaning(idMeaning: String, idItemVocabulary: String,
+                   descOne: String, descTwo: String) : Long {
         val contentValues = ContentValues()
+        contentValues.put(Constants.MEANING_ID, idMeaning)
         contentValues.put(Constants.MEANING_VOCABULARY_ID_ITEM, idItemVocabulary)
         contentValues.put(Constants.MEANING_DESC_ONE, descOne)
         contentValues.put(Constants.MEANING_DESC_TWO, descTwo)
@@ -77,33 +79,23 @@ class DatabaseAdapter(context: Context) {
             null, null, null, null, null)
     }
 
-    fun getItemsVocabularyToLearn(): Cursor {
-        val query =
-            " SELECT ${Constants.VOCABULARY_ID_ITEM}, ${Constants.VOCABULARY_NAME_ITEM}, " +
-                    " ${Constants.VOCABULARY_LEARNED_ITEM} " +
-                    " FROM  ${Constants.ITEMS_VOCABULARY_TABLE} " +
-                    " WHERE ${Constants.VOCABULARY_LEARNED_ITEM} = 0 "
-
-        val data = db!!.rawQuery(query,null)
-        return data
-    }
-
-    fun getItemsVocabularyLearned(): Cursor {
-        val query =
-            " SELECT ${Constants.VOCABULARY_ID_ITEM}, ${Constants.VOCABULARY_NAME_ITEM}, " +
-                    " ${Constants.VOCABULARY_LEARNED_ITEM} " +
-                    " FROM  ${Constants.ITEMS_VOCABULARY_TABLE} " +
-                    " WHERE ${Constants.VOCABULARY_LEARNED_ITEM} = 1 "
-
-        val data = db!!.rawQuery(query,null)
-        return data
-    }
-
     fun getMeaningsByItem(idItemVocabulary: String = "") : Cursor {
         val query =
             " SELECT ${Constants.MEANING_DESC_ONE} " +
             " FROM ${Constants.MEANINGS_TABLE} " +
-            " WHERE ${Constants.MEANING_VOCABULARY_ID_ITEM} = '${idItemVocabulary}' "
+            " WHERE ${Constants.MEANING_VOCABULARY_ID_ITEM} = '$idItemVocabulary' "
+        val data = db!!.rawQuery(query,null)
+        return data
+    }
+
+    fun getItemsVocabularyFiltered(filterType: String, textSearch: String): Cursor {
+        var query =
+            " SELECT ${Constants.VOCABULARY_ID_ITEM}, ${Constants.VOCABULARY_NAME_ITEM}, " +
+            " ${Constants.VOCABULARY_LEARNED_ITEM} " +
+            " FROM  ${Constants.ITEMS_VOCABULARY_TABLE} "
+        if (filterType == "tolearn") query += " WHERE ${Constants.VOCABULARY_LEARNED_ITEM} = 0 "
+        else if (filterType == "learned") query += " WHERE ${Constants.VOCABULARY_LEARNED_ITEM} = 1 "
+        if (textSearch != "") query += " AND ${Constants.VOCABULARY_NAME_ITEM} LIKE '%$textSearch%' "
         val data = db!!.rawQuery(query,null)
         return data
     }
@@ -123,7 +115,7 @@ class DatabaseAdapter(context: Context) {
             )
             db.execSQL(
                 "CREATE TABLE ${Constants.MEANINGS_TABLE} (" +
-                    "${Constants.MEANING_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "${Constants.MEANING_ID} TEXT PRIMARY KEY, " +
                     "${Constants.MEANING_VOCABULARY_ID_ITEM} TEXT NOT NULL, " +
                     "${Constants.MEANING_DESC_ONE} TEXT NOT NULL, " +
                     "${Constants.MEANING_DESC_TWO} TEXT NOT NULL )"

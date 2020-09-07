@@ -12,12 +12,81 @@
         android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-        <TextView
-            android:id="@+id/tvDatos"
+        <RadioGroup
+            android:id="@+id/rgOptionsItemsVocabulary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="AQUI" />
+            android:paddingTop="@dimen/padding_general_components"
+            android:paddingBottom="@dimen/padding_general_components"
+            android:layout_marginTop="@dimen/first_top_Margin"
+            android:layout_marginBottom="@dimen/bottom_general_margin"
+            android:layout_marginLeft="@dimen/left_right_general_margin"
+            android:layout_marginRight="@dimen/left_right_general_margin"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <RadioButton
+                android:id="@+id/rbToLearn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Por aprender"
+                android:textColor="@color/colorBlack"
+                android:checked="true"
+                android:textSize="@dimen/text_view_general"
+                android:layout_marginRight="30dp"/>
+
+            <RadioButton
+                android:id="@+id/rbLearned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_view_general"
+                android:text="Aprendidas"/>
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="16"
+            android:layout_marginLeft="@dimen/left_right_general_margin"
+            android:layout_marginRight="@dimen/left_right_general_margin"
+            android:layout_marginBottom="@dimen/bottom_general_margin">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:textSize="@dimen/text_view_general"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:text="Buscar:"/>
+
+            <SearchView
+                android:id="@+id/svFindItemVoc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="12"
+                android:layout_marginLeft="@dimen/left_right_general_margin"
+                android:layout_marginRight="@dimen/left_right_general_margin"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvAreThereData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No se encontaron registros"
+            android:textSize="@dimen/text_view_general"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/bottom_general_margin"
+            android:visibility="invisible"
+            />
 
         <ListView
             android:id="@+id/lvVocabularyList"

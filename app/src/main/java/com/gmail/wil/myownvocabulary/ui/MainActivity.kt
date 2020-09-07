@@ -9,6 +9,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.FrameLayout
+import android.widget.SearchView
 import com.gmail.wil.myownvocabulary.R
 import com.gmail.wil.myownvocabulary.db.DatabaseAdapter
 import com.gmail.wil.myownvocabulary.listsAdapter.VocabularyListAdapter
@@ -16,7 +17,8 @@ import com.gmail.wil.myownvocabulary.model.ItemVocabulary
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fab_main_opt_layout.*
 
-class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
+    SearchView.OnQueryTextListener {
     // Variables to list words
     private var adaptadorLista: VocabularyListAdapter? = null
     private val ids = ArrayList<String>()
@@ -30,6 +32,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     lateinit var show_fab_training: Animation
     lateinit var hide_fab_training: Animation
     var STATUS = false
+
+    // Variable to filter type items Vocabulary
+    private var filterList= "tolearn"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +66,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
                 STATUS = false
             }
         }
-
+        // actions in sub buttons de FAB
         fab_new_word.setOnClickListener {
             val intent = Intent(this, AddMeaningActivity::class.java)
             startActivity(intent)
@@ -70,12 +75,27 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             val intent = Intent(this, TrainingActivity::class.java)
             startActivity(intent)
         }
+
+        // Methods to Radios
+        rbToLearn.setOnClickListener {
+            filterList = "tolearn"
+            onClickRadioButton(filterList)
+        }
+        rbLearned.setOnClickListener {
+            filterList = "learned"
+            onClickRadioButton(filterList)
+        }
+
+        // Variable to access to Search View and its methods
+        val editSearch = findViewById(R.id.svFindItemVoc) as SearchView
+        editSearch.setOnQueryTextListener(this)
     }
 
     override fun onStart() {
         super.onStart()
         db!!.abrir()
-        chargeAdapterList(getDataItems("all"))
+        // it will start loading list items to learn
+        chargeAdapterList(getDataItems(filterList))
     }
 
     override fun onStop() {
@@ -83,12 +103,39 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         db!!.cerrar()
     }
 
-    fun getDataItems(listFilter: String) : ArrayList<ItemVocabulary> {
+    override fun onPause() {
+        super.onPause()
+        // to hide buttons of FAB
+        // hideFAB()
+        // STATUS = false
+    }
+
+    // Function when press on item on radio
+    fun onClickRadioButton(typeItemsVoc: String) {
+        chargeAdapterList(getDataItems(typeItemsVoc))
+    }
+
+    // Methods to search items vocabulary for a text input
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        var textToSearchListItemsVoc = ""
+        if (newText != null && newText !== "") textToSearchListItemsVoc = newText
+        chargeAdapterList(getDataItems(filterList, textToSearchListItemsVoc))
+        return false
+    }
+
+    // Method receive two parameters
+    // filter tolearn or learned and makes a query to SQLite
+    // textsearch text input in Search View also makes a query to SQLite
+    fun getDataItems(listFilter: String, textSearch: String = "") : ArrayList<ItemVocabulary> {
         var listItemsVocabulary = ArrayList<ItemVocabulary>()
         var cursor: Cursor? = null
-        if (listFilter == "all") cursor = db!!.getAllItemsVocabulary()
-        if (listFilter == "tolearn") cursor = db!!.getItemsVocabularyToLearn()
-        if (listFilter == "learned") cursor = db!!.getItemsVocabularyLearned()
+        // if after want to get all data
+        // if (listFilter == "all") cursor = db!!.getAllItemsVocabulary()
+        cursor = db!!.getItemsVocabularyFiltered(listFilter, textSearch)
         if (cursor!!.moveToFirst()) {
             do {
                 val itemVocabulary = ItemVocabulary(cursor.getString(0),
@@ -99,25 +146,35 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         return listItemsVocabulary
     }
 
+    // This function builds list that recieve from getDataItems()
     fun chargeAdapterList(list: ArrayList<ItemVocabulary>) {
         var idResourceImage = R.drawable.ic_baseline_spellcheck_24
         ids.clear()
         adaptadorLista!!.eliminarTodo()
-        for (item in list) {
-            if (item.learned_item == 1) idResourceImage = R.drawable.ic_baseline_spellcheck_24
-            else idResourceImage = R.drawable.ic_baseline_priority_high_24
-            adaptadorLista!!.adicionarItem(idResourceImage, item.name_item, "")
-            ids.add(item.id_item)
+        if (list.size > 0) {
+            tvAreThereData.setVisibility(View.INVISIBLE)
+            for (item in list) {
+                if (item.learned_item == 1) idResourceImage = R.drawable.ic_baseline_spellcheck_24
+                else idResourceImage = R.drawable.ic_baseline_priority_high_24
+                adaptadorLista!!.adicionarItem(idResourceImage, item.name_item, "")
+                ids.add(item.id_item)
+            }
+        } else {
+            tvAreThereData.setVisibility(View.VISIBLE)
         }
         adaptadorLista!!.notifyDataSetChanged()
     }
 
+    // Function that make an intent to MeaningsListActivity when press an item from list
     override fun onItemClick(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
         val intent = Intent(this, MeaningsListActivity::class.java)
         intent.putExtra("id_item_vocabulary", ids[i])
         startActivity(intent)
     }
 
+    /* todo methods update and delete here */
+
+    // Functions to hide or show buttons of FAB
     private fun expandFAB() {
         val layoutParams = fab_new_word.layoutParams as FrameLayout.LayoutParams
         layoutParams.rightMargin += (fab_new_word.width * 0.25).toInt()
