@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:id="@+id/lnMainParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -141,6 +142,7 @@
             android:orientation="horizontal"
             android:layout_marginLeft="@dimen/left_right_general_margin"
             android:layout_marginRight="@dimen/left_right_general_margin"
+            android:layout_marginBottom="@dimen/bottom_general_margin"
             android:weightSum="12">
 
             <Button
@@ -172,5 +174,6 @@
         </LinearLayout>
 
     </LinearLayout>
+
 
 </ScrollView>

@@ -26,7 +26,7 @@ class DatabaseAdapter(context: Context) {
         databaseHelper.close()
     }
 
-    fun addWord(idItem: String, name: String, learned: Int): Long {
+    fun addItemVocabulary(idItem: String, name: String, learned: Int) : Long {
         val contentValues = ContentValues()
         contentValues.put(Constants.VOCABULARY_ID_ITEM, idItem)
         contentValues.put(Constants.VOCABULARY_NAME_ITEM, name)
@@ -66,6 +66,15 @@ class DatabaseAdapter(context: Context) {
 //            arrayOf(Constants.ID, Constants.NOMBRE, Constants.TELEFONO, Constants.CORREO, Constants.GENERO),
 //            "${Constants.ID}=?", arrayOf(id.toString() + ""), null, null, null)
 //    }
+
+    fun getItemsLookLike(nameInput: String = "") : Cursor {
+        val query =
+            " SELECT ${Constants.VOCABULARY_NAME_ITEM} " +
+            " FROM ${Constants.ITEMS_VOCABULARY_TABLE} " +
+            " WHERE ${Constants.VOCABULARY_NAME_ITEM} LIKE '%$nameInput%' "
+        val data = db!!.rawQuery(query,null)
+        return data
+    }
 
     fun updateTypeItemVocabulary (id: String, learned: Int) : Int {
         val contentValues = ContentValues()

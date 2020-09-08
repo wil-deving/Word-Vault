@@ -8,3 +8,21 @@ fun randomAlphanumericString(): String {
         .map(charPool::get)
         .joinToString("")
 }
+
+fun compareMeanings(textOne: String = "", textTwo: String = "") : Boolean {
+    val toCaseTextOne = textOne.trim().toUpperCase()
+    val toCaseTextTwo = textTwo.trim().toUpperCase()
+    if (toCaseTextOne == toCaseTextTwo) return true
+    else {
+        val sptTextOne = toCaseTextOne.split(" ")
+        val sptTextTwo = toCaseTextTwo.split(" ")
+        val calculateWeightByWord = ((1.00 / sptTextOne.size.toDouble()) * 100.00 )
+        var sumWeightTotal = 0.00
+        for (wordInTwo in sptTextTwo) {
+            if (wordInTwo in sptTextOne) sumWeightTotal += calculateWeightByWord
+            else sumWeightTotal -= (calculateWeightByWord / 25.00)
+        }
+        println("------->" + sumWeightTotal)
+        return (sumWeightTotal > 25.00)
+    }
+}

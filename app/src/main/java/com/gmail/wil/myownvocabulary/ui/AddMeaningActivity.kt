@@ -3,16 +3,24 @@ package com.gmail.wil.myownvocabulary.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.gmail.wil.myownvocabulary.db.DatabaseAdapter
 import com.gmail.wil.myownvocabulary.R
+import com.gmail.wil.myownvocabulary.managers.compareMeanings
 import com.gmail.wil.myownvocabulary.managers.randomAlphanumericString
 import com.gmail.wil.myownvocabulary.model.ItemVocabulary
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_add_meaning.*
+import java.util.ArrayList
 
 class AddMeaningActivity : AppCompatActivity() {
     private var db: DatabaseAdapter? = null
+
+    //lateinit var coord: CoordinatorLayout
+    lateinit var linearLayout: LinearLayout
 
     private var FirstSaveItemVoc = true
     private var EditionMeaning = false
@@ -21,6 +29,8 @@ class AddMeaningActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_meaning)
+
+        linearLayout = findViewById(R.id.lnMainParent)
 
         db = DatabaseAdapter(this)
 
@@ -37,96 +47,102 @@ class AddMeaningActivity : AppCompatActivity() {
     }
 
     fun saveAndFinish(view: View) {
+        val descOriginalMeaning = etDescOriginalMeaning!!.text.toString()
+        val descSecundaryMeaning = etDescSecundaryMeaning!!.text.toString()
         if (FirstSaveItemVoc) {
-            val isCorrectFieldNameItemVoc = validateFieldNameItemVoc()
-            val isCorrectFieldsMeaning = validateFieldsMeaning()
-            if (isCorrectFieldNameItemVoc && isCorrectFieldsMeaning) {
-                createDialogSaveData("Guardar nuevo significado",
-                    "Seguro de guardar significado?", true).show()
+            if (validateFieldNameItemVoc() && validateFieldsMeaning()) {
+                if (compareMeanings(descOriginalMeaning, descSecundaryMeaning)) {
+                    val nameItemVoc = etNameItemVocabulary!!.text.toString()
+                    if (!validateExistenceItemVocabulary(nameItemVoc)) {
+                        createDialogSaveData("Guardar nueva Palabra o Expresión",
+                            "Está seguro de guardar esta información?",
+                            true).show()
+                    } else {
+                        showSnackBar("Esta palabra ya existe!")
+                    }
+                } else {
+                    showSnackBar("Los Significados deben ser iguales o parecerse")
+                }
             } else {
-                Toast.makeText(this, "Debe llenar los campos", Toast.LENGTH_SHORT).show()
+                showSnackBar("Debe llenar los campos")
             }
         } else {
             if (validateFieldNameItemVoc()) {
-                createDialogSaveData("Guardar nuevo significado",
-                    "Seguro de guardar significado?", true).show()
+                if (validateFieldsMeaning()) {
+                    if (compareMeanings(descOriginalMeaning, descSecundaryMeaning)) {
+                        createDialogSaveData("Guardar nuevo significado",
+                            "Está seguro de guardar esta información?",
+                            true).show()
+                    } else {
+                        showSnackBar("Los Significados deben ser iguales o parecerse")
+                    }
+                } else {
+                    finish()
+                }
             } else {
-                finish()
+                showSnackBar("Debe llenar los campos")
             }
         }
     }
 
     fun addAnotherMeaning (view: View) {
-        val isCorrectFieldsMeaning = validateFieldsMeaning()
-        val isCorrectFieldNameItemVoc = validateFieldNameItemVoc()
-        if (isCorrectFieldsMeaning && isCorrectFieldNameItemVoc) {
-            createDialogSaveData("Guardar nuevo significado",
-                "Seguro de guardar significado?").show()
+        val descOriginalMeaning = etDescOriginalMeaning!!.text.toString()
+        val descSecundaryMeaning = etDescSecundaryMeaning!!.text.toString()
+        if (FirstSaveItemVoc) {
+            if (validateFieldNameItemVoc() && validateFieldsMeaning()) {
+                if (compareMeanings(descOriginalMeaning, descSecundaryMeaning)) {
+                    val nameItemVoc = etNameItemVocabulary!!.text.toString()
+                    if (!validateExistenceItemVocabulary(nameItemVoc)) {
+                        createDialogSaveData("Guardar nueva Palabra o Expresión",
+                            "Está seguro de guardar esta información?",
+                            false).show()
+                    } else {
+                        showSnackBar("Esta palabra ya existe!")
+                    }
+                } else {
+                    showSnackBar("Los Significados deben ser iguales o parecerse")
+                }
+            } else {
+                showSnackBar("Debe llenar los campos")
+            }
         } else {
-            Toast.makeText(this, "Debe llenar los campos", Toast.LENGTH_SHORT).show()
+            if (validateFieldsMeaning()) {
+                if (compareMeanings(descOriginalMeaning, descSecundaryMeaning)) {
+                    createDialogSaveData("Guardar nuevo significado",
+                        "Está seguro de guardar esta información?",
+                        false).show()
+                } else {
+                    showSnackBar("Los Significados deben ser iguales o parecerse")
+                }
+            } else {
+                showSnackBar("Debe llenar los campos")
+            }
         }
     }
 
-    fun saveData(isToEnd: Boolean) {
-        val nameItemVoc =etNameItemVocabulary!!.text.toString()
-        if (FirstSaveItemVoc) {
-            if (isToEnd) {
-                if (validateFieldsMeaning()) {
-                    val existItemVoc = validateExistenceItemVocabulary(nameItemVoc)
-                    if (!existItemVoc) {
-                        saveItemVocabulary(nameItemVoc)
-                        saveMeaning()
-                        finish()
-                    } else {
-                        Toast.makeText(this, "Esta palabra o expresión ya existe",
-                            Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    Toast.makeText(this, "Debe llenar los campos", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                val existItemVoc = validateExistenceItemVocabulary(nameItemVoc)
-                if (!existItemVoc) {
-                    saveItemVocabulary(nameItemVoc)
-                    saveMeaning()
-                    FirstSaveItemVoc = false
-                    // deshabilitar et de la palabra
-                    etNameItemVocabulary.isEnabled = false
-                    clearFields(false)
-                }
-            }
-        } else {
-            if (isToEnd) {
-                if (validateFieldsMeaning()) {
-                    saveMeaning()
-                    finish()
-                }
-            } else {
-                saveMeaning()
-                clearFields(false)
-            }
-        }
+    fun cancel(view: View) {
+        finish()
     }
 
     fun saveItemVocabulary(nameItemVoc: String) {
         // solo la primera vez creara un codigo alfanumerico
         IdItemVoc = randomAlphanumericString()
         // At first create a word
-        val itemVocabulary = ItemVocabulary(IdItemVoc, nameItemVoc,1)
-        db!!.addWord(itemVocabulary.id_item, itemVocabulary.name_item,
+        val itemVocabulary = ItemVocabulary(IdItemVoc, nameItemVoc,0)
+        db!!.addItemVocabulary(itemVocabulary.id_item, itemVocabulary.name_item,
             itemVocabulary.learned_item)
     }
 
     fun saveMeaning() {
         val idNewMeaning = randomAlphanumericString()
-        val descOriginalMeaning =etDescOriginalMeaning!!.text.toString()
-        val descSecundaryMeaning =etDescSecundaryMeaning!!.text.toString()
+        val descOriginalMeaning = etDescOriginalMeaning!!.text.toString()
+        val descSecundaryMeaning = etDescSecundaryMeaning!!.text.toString()
         db!!.addMeaning(idNewMeaning, IdItemVoc,
             descOriginalMeaning,
             descSecundaryMeaning)
     }
 
-    fun createDialogSaveData(title: String, message: String, isToEnd: Boolean = false)
+    fun createDialogSaveData(title: String, message: String, isToFinish: Boolean = false)
             : AlertDialog {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle(title)
@@ -135,7 +151,28 @@ class AddMeaningActivity : AppCompatActivity() {
         alertDialog.setCancelable(false)
         //con este boton del dialgo saldremos del dialogo, es positivo asi que se ubicara a la derecha
         alertDialog.setPositiveButton("Aceptar"){ dialogInterface, i ->
-            saveData(isToEnd)
+            if (isToFinish) {
+                if (FirstSaveItemVoc) {
+                    val nameItemVoc = etNameItemVocabulary!!.text.toString()
+                    saveItemVocabulary(nameItemVoc)
+                    saveMeaning()
+                    finish()
+                } else {
+                    saveMeaning()
+                    finish()
+                }
+            } else {
+                if (FirstSaveItemVoc) {
+                    val nameItemVoc = etNameItemVocabulary!!.text.toString()
+                    saveItemVocabulary(nameItemVoc)
+                    saveMeaning()
+                } else {
+                    saveMeaning()
+                }
+                etNameItemVocabulary.isEnabled = false
+                FirstSaveItemVoc = false
+                clearFields("addAnotherMeaning")
+            }
         }
         //el boton neutral se ubica a la izquierda, esto por reglas de diseño
         alertDialog.setNeutralButton("Cancelar"){ dialogInterface, i ->
@@ -144,14 +181,30 @@ class AddMeaningActivity : AppCompatActivity() {
         return alertDialog.create()
     }
 
-    fun cancel(view: View) {
-        clearFields(true)
+    fun showSnackBar(message: String) {
+        val snackbar = Snackbar.make(linearLayout, message, Snackbar.LENGTH_LONG)
+        snackbar.show()
     }
 
     fun validateExistenceItemVocabulary(nameItemVoc: String) : Boolean {
         // si esta palabra hay en DB false sino true
-
-        return false
+        var flag = false
+        val arrayDB = ArrayList<String>()
+        val cursor = db!!.getItemsLookLike(nameItemVoc.trim())
+        if (cursor!!.moveToFirst()) {
+            do {
+                arrayDB.add(cursor.getString(0))
+            } while (cursor.moveToNext())
+        }
+        if (arrayDB.size > 0) {
+            for (itemDB in arrayDB) {
+                if (itemDB.toUpperCase() == nameItemVoc.trim().toUpperCase()) {
+                    flag = true
+                    break
+                }
+            }
+        }
+        return flag
     }
 
     fun validateFieldNameItemVoc() :Boolean {
@@ -174,12 +227,8 @@ class AddMeaningActivity : AppCompatActivity() {
         return true
     }
 
-    fun clearFields(fromCancel: Boolean = false) {
-        if (fromCancel) {
-            etNameItemVocabulary.setText("")
-            etDescOriginalMeaning.setText("")
-            etDescSecundaryMeaning.setText("")
-        } else {
+    fun clearFields(origin: String = "") {
+        if (origin == "addAnotherMeaning") {
             etDescOriginalMeaning.setText("")
             etDescSecundaryMeaning.setText("")
         }
