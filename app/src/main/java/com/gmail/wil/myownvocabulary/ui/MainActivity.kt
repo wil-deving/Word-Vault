@@ -34,7 +34,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
     var STATUS = false
 
     // Variable to filter type items Vocabulary
-    private var filterList= "tolearn"
+    private var FilterList= "tolearn"
+
+    // Variable to set from SearchView
+    private var TextSearched = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,12 +81,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
 
         // Methods to Radios
         rbToLearn.setOnClickListener {
-            filterList = "tolearn"
-            onClickRadioButton(filterList)
+            FilterList = "tolearn"
+            onClickRadioButton(FilterList, TextSearched)
         }
         rbLearned.setOnClickListener {
-            filterList = "learned"
-            onClickRadioButton(filterList)
+            FilterList = "learned"
+            onClickRadioButton(FilterList, TextSearched)
         }
 
         // Variable to access to Search View and its methods
@@ -95,7 +98,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         super.onStart()
         db!!.abrir()
         // it will start loading list items to learn
-        chargeAdapterList(getDataItems(filterList))
+        chargeAdapterList(getDataItems(FilterList))
     }
 
     override fun onStop() {
@@ -111,8 +114,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
     }
 
     // Function when press on item on radio
-    fun onClickRadioButton(typeItemsVoc: String) {
-        chargeAdapterList(getDataItems(typeItemsVoc))
+    fun onClickRadioButton(typeItemsVoc: String, textSearch: String = "") {
+        chargeAdapterList(getDataItems(typeItemsVoc, textSearch))
     }
 
     // Methods to search items vocabulary for a text input
@@ -121,9 +124,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        var textToSearchListItemsVoc = ""
-        if (newText != null && newText !== "") textToSearchListItemsVoc = newText
-        chargeAdapterList(getDataItems(filterList, textToSearchListItemsVoc))
+        TextSearched = ""
+        if (newText != null && newText !== "") TextSearched = newText
+        chargeAdapterList(getDataItems(FilterList, TextSearched))
         return false
     }
 

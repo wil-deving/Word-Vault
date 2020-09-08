@@ -9,4 +9,6 @@
     <dimen name="padding_general_components">4dp</dimen>
 
     <dimen name="text_view_general">20sp</dimen>
+
+    <dimen name="text_button_general">16sp</dimen>
 </resources>

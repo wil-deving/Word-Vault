@@ -23,15 +23,17 @@
 
 
         <EditText
-            android:id="@+id/etNameWord"
+            android:id="@+id/etNameItemVocabulary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Palabra o expresión..."
+            android:inputType="textCapSentences"
             android:layout_marginBottom="@dimen/bottom_general_margin"
             android:layout_marginLeft="@dimen/left_right_general_margin"
             android:layout_marginRight="@dimen/left_right_general_margin"
             />
 
+        <!-- When module dictionaries is finished
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +62,7 @@
             </Spinner>
 
         </LinearLayout>
+        -->
 
         <TextView
             android:layout_width="match_parent"
@@ -75,10 +78,10 @@
             />
 
         <EditText
-            android:id="@+id/etMeaningOne"
+            android:id="@+id/etDescOriginalMeaning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
+            android:inputType="textCapSentences|textMultiLine"
             android:hint="Significado..."
             android:lines="5"
             android:maxLines="5"
@@ -104,10 +107,10 @@
             />
 
         <EditText
-            android:id="@+id/etMeaningTwo"
+            android:id="@+id/etDescSecundaryMeaning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
+            android:inputType="textCapSentences|textMultiLine"
             android:hint="Significado..."
             android:lines="5"
             android:maxLines="5"
@@ -118,6 +121,20 @@
             android:layout_marginRight="@dimen/left_right_general_margin"
             />
 
+        <Button
+            android:id="@+id/btnAnotherMeaning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_baseline_add_circle_white24"
+            android:drawableTint="@color/colorWhite"
+            android:backgroundTint="@color/colorSemiSuccess"
+            android:text="Adiconar otro significado"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:onClick="addAnotherMeaning"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -127,28 +144,32 @@
             android:weightSum="12">
 
             <Button
-                android:id="@+id/btnAnotherMeaning"
                 android:layout_width="0dp"
                 android:layout_weight="6"
                 android:layout_height="wrap_content"
-                android:text="Otro significado"
-                android:onClick="saveMeaning"/>
+                android:text="Finalizar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_button_general"
+                android:layout_marginLeft="@dimen/left_right_general_margin"
+                android:layout_marginRight="@dimen/left_right_general_margin"
+                android:background="@color/colorSecundary"
+                android:onClick="saveAndFinish"/>
 
             <Button
                 android:layout_width="0dp"
                 android:layout_weight="6"
                 android:layout_height="wrap_content"
-                android:text="Cancelar"/>
+                android:text="Cancelar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_button_general"
+                android:layout_marginLeft="@dimen/left_right_general_margin"
+                android:layout_marginRight="@dimen/left_right_general_margin"
+                android:background="@color/colorDanger"
+                android:onClick="cancel"/>
 
         </LinearLayout>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/left_right_general_margin"
-            android:layout_marginRight="@dimen/left_right_general_margin"
-            android:text="Finalizar"
-            android:onClick="finalizar"/>
 
     </LinearLayout>
 
