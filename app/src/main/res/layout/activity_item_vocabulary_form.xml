@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingrese la Nueva Palabra o Expresión"
+            android:textSize="@dimen/text_view_general"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/first_top_Margin"
+            android:layout_marginBottom="@dimen/bottom_general_margin"
+            android:layout_marginLeft="@dimen/left_right_general_margin"
+            android:layout_marginRight="@dimen/left_right_general_margin"
+            />
+
+
+        <EditText
+            android:id="@+id/etNewNameItemVocabulary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Palabra o expresión..."
+            android:inputType="textCapSentences"
+            android:layout_marginBottom="@dimen/bottom_general_margin"
+            android:layout_marginLeft="@dimen/left_right_general_margin"
+            android:layout_marginRight="@dimen/left_right_general_margin"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/left_right_general_margin"
+            android:layout_marginRight="@dimen/left_right_general_margin"
+            android:weightSum="12">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content"
+                android:text="Finalizar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_button_general"
+                android:layout_marginLeft="@dimen/left_right_general_margin"
+                android:layout_marginRight="@dimen/left_right_general_margin"
+                android:background="@color/colorSecundary"
+                android:onClick="saveNewItemVocabulary"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content"
+                android:text="Cancelar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_button_general"
+                android:layout_marginLeft="@dimen/left_right_general_margin"
+                android:layout_marginRight="@dimen/left_right_general_margin"
+                android:background="@color/colorDanger"
+                android:onClick="cancel"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

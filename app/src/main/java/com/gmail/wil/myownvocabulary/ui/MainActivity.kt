@@ -4,12 +4,16 @@ import android.content.Intent
 import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.SearchView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.gmail.wil.myownvocabulary.R
 import com.gmail.wil.myownvocabulary.db.DatabaseAdapter
 import com.gmail.wil.myownvocabulary.listsAdapter.VocabularyListAdapter
@@ -21,7 +25,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
     SearchView.OnQueryTextListener {
     // Variables to list words
     private var adaptadorLista: VocabularyListAdapter? = null
-    private val ids = ArrayList<String>()
+    private val listItems = ArrayList<ItemVocabulary>()
 
     // Variables to connect DB
     private var db: DatabaseAdapter? = null
@@ -152,7 +156,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
     // This function builds list that recieve from getDataItems()
     fun chargeAdapterList(list: ArrayList<ItemVocabulary>) {
         var idResourceImage = R.drawable.ic_baseline_spellcheck_24
-        ids.clear()
+        listItems.clear()
         adaptadorLista!!.eliminarTodo()
         if (list.size > 0) {
             tvAreThereData.setVisibility(View.INVISIBLE)
@@ -160,7 +164,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
                 if (item.learned_item == 1) idResourceImage = R.drawable.ic_baseline_spellcheck_24
                 else idResourceImage = R.drawable.ic_baseline_priority_high_24
                 adaptadorLista!!.adicionarItem(idResourceImage, item.name_item, "")
-                ids.add(item.id_item)
+                listItems.add(ItemVocabulary(item.id_item, item.name_item, item.learned_item))
             }
         } else {
             tvAreThereData.setVisibility(View.VISIBLE)
@@ -171,11 +175,77 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
     // Function that make an intent to MeaningsListActivity when press an item from list
     override fun onItemClick(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
         val intent = Intent(this, MeaningsListActivity::class.java)
-        intent.putExtra("id_item_vocabulary", ids[i])
+        intent.putExtra("id_item_vocabulary", listItems[i].id_item)
         startActivity(intent)
     }
 
-    /* todo methods update and delete here */
+    /* todo methods to update and delete here */
+    // Inflate menu to update, delete or sent to learn an item
+    override fun onCreateContextMenu(menu: ContextMenu, v: View,
+                                     menuInfo: ContextMenu.ContextMenuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        // If radio is checked to learn inflate menu without sent to learn
+        if (FilterList == "tolearn") {
+            menuInflater.inflate(R.menu.options_item_to_learn, menu)
+        } else if (FilterList == "learned") {
+            menuInflater.inflate(R.menu.options_item_learned, menu)
+        }
+    }
+
+    // Method that happen when stay press on an item
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
+        val index = info.position
+        when (item.itemId) {
+            // Change an item from to learn to learned
+            R.id.menu_send_item_voc_to_learn -> {
+                createDialogSaveData("Cambiar Item a No Aprendidos",
+                    "Está seguro de mover esta palabra o expresión a no aprendidos?",
+                    "sendItemToLearn", listItems[index].id_item).show()
+            }
+            // Update an item
+            R.id.menu_editar_item_voc -> {
+                val intent = Intent(this, ItemVocabularyFormActivity::class.java)
+                intent.putExtra("idItemV", listItems[index].id_item)
+                intent.putExtra("nameItemV", listItems[index].name_item)
+                startActivity(intent)
+            }
+            // Delete an item
+            R.id.menu_eliminar_item_voc -> {
+                createDialogSaveData("Eliminar Item",
+                    "Está seguro de Eliminar esta palabra o expresión?",
+                    "deleteItem", listItems[index].id_item).show()
+            }
+        }
+        return super.onContextItemSelected(item)
+    }
+
+    // Function create a Dialog
+    fun createDialogSaveData(title: String, message: String, origin: String, idItemV: String)
+            : AlertDialog {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle(title)
+        alertDialog.setMessage(message)
+        //prohibimos que al hacer click en cualquier lugar de la pantalla el dialogo desaparezca
+        alertDialog.setCancelable(false)
+        //con este boton del dialgo saldremos del dialogo, es positivo asi que se ubicara a la derecha
+        alertDialog.setPositiveButton("Aceptar"){ dialogInterface, i ->
+            // to change or delete
+            if (origin == "sendItemToLearn") {
+                db!!.updateTypeItemVocabulary(idItemV, 0)
+            } else if (origin == "deleteItem") {
+                db!!.deleteItemVocabulary(idItemV)
+            }
+            // update list of items
+            chargeAdapterList(getDataItems(FilterList, TextSearched))
+        }
+        //el boton neutral se ubica a la izquierda, esto por reglas de diseño
+        alertDialog.setNeutralButton("Cancelar"){ dialogInterface, i ->
+            // Toast.makeText(this, "Click en cancelar", Toast.LENGTH_SHORT).show()
+        }
+        return alertDialog.create()
+    }
+
 
     // Functions to hide or show buttons of FAB
     private fun expandFAB() {

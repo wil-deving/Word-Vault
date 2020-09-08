@@ -47,7 +47,12 @@ class AddMeaningActivity : AppCompatActivity() {
                 Toast.makeText(this, "Debe llenar los campos", Toast.LENGTH_SHORT).show()
             }
         } else {
-           finish()
+            if (validateFieldNameItemVoc()) {
+                createDialogSaveData("Guardar nuevo significado",
+                    "Seguro de guardar significado?", true).show()
+            } else {
+                finish()
+            }
         }
     }
 
@@ -149,6 +154,14 @@ class AddMeaningActivity : AppCompatActivity() {
         return false
     }
 
+    fun validateFieldNameItemVoc() :Boolean {
+        if (etNameItemVocabulary.text.toString() == null ||
+            etNameItemVocabulary.text.toString() == "") {
+            return false
+        }
+        return true
+    }
+
     fun validateFieldsMeaning() : Boolean {
         if (etDescOriginalMeaning.text.toString() == null ||
             etDescOriginalMeaning.text.toString() == "") {
@@ -156,14 +169,6 @@ class AddMeaningActivity : AppCompatActivity() {
         }
         if (etDescSecundaryMeaning.text.toString() == null ||
             etDescSecundaryMeaning.text.toString() == "") {
-            return false
-        }
-        return true
-    }
-
-    fun validateFieldNameItemVoc() :Boolean {
-        if (etNameItemVocabulary.text.toString() == null ||
-            etNameItemVocabulary.text.toString() == "") {
             return false
         }
         return true

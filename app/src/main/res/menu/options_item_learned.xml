@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_send_item_voc_to_learn"
+        app:showAsAction="ifRoom"
+        android:title="Marcar como no Aprendido"/>
+    <item
+        android:id="@+id/menu_editar_item_voc"
+        app:showAsAction="ifRoom"
+        android:title="Editar"/>
+    <item
+        android:id="@+id/menu_eliminar_item_voc"
+        app:showAsAction="ifRoom"
+        android:title="Eliminar"/>
+</menu>

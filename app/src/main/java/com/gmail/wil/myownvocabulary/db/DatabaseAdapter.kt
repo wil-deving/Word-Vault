@@ -67,16 +67,23 @@ class DatabaseAdapter(context: Context) {
 //            "${Constants.ID}=?", arrayOf(id.toString() + ""), null, null, null)
 //    }
 
+    fun updateTypeItemVocabulary (id: String, learned: Int) : Int {
+        val contentValues = ContentValues()
+        contentValues.put(Constants.VOCABULARY_LEARNED_ITEM, learned)
+        //necesario rescatar el id para que vaya en el where del update
+        return db!!.update(Constants.ITEMS_VOCABULARY_TABLE, contentValues, "${Constants.VOCABULARY_ID_ITEM}=?", arrayOf(id))
+    }
 
-    //el objeto del tipo Cursor es una tabla en formato kt SQL
-    fun getAllItemsVocabulary(): Cursor {
-        //para hacer consultas utilizamos el metodo query
-        //en sQLIte no hay el * debemos poner todos los campos y colocarlos en un array of
-        return db!!.query(Constants.ITEMS_VOCABULARY_TABLE,
-            arrayOf(Constants.VOCABULARY_ID_ITEM,
-                Constants.VOCABULARY_NAME_ITEM,
-                Constants.VOCABULARY_LEARNED_ITEM),
-            null, null, null, null, null)
+    fun updateDataItemVocabulary (id: String, newNameItemV: String) : Int {
+        val contentValues = ContentValues()
+        contentValues.put(Constants.VOCABULARY_NAME_ITEM, newNameItemV)
+        //necesario rescatar el id para que vaya en el where del update
+        return db!!.update(Constants.ITEMS_VOCABULARY_TABLE, contentValues, "${Constants.VOCABULARY_ID_ITEM}=?", arrayOf(id))
+    }
+
+    fun deleteItemVocabulary(id: String) : Boolean {
+        //las condiciones del argumento del where se pueden concatenar para hacer mas flitro del query
+        return db!!.delete(Constants.ITEMS_VOCABULARY_TABLE, "${Constants.VOCABULARY_ID_ITEM}='$id'", null) > 0
     }
 
     fun getMeaningsByItem(idItemVocabulary: String = "") : Cursor {
