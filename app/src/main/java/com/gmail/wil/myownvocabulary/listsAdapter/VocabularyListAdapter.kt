@@ -10,12 +10,11 @@ import android.widget.TextView
 import com.gmail.wil.myownvocabulary.R
 
 class VocabularyListAdapter(contexto: Context) : BaseAdapter() {
-
-
+    
     val inflater: LayoutInflater = LayoutInflater.from(contexto)
     val imagenes: ArrayList<Int> = ArrayList()
     val textosPrincipales: ArrayList<String> = ArrayList()
-    val textosSecundarios: ArrayList<String> = ArrayList()
+    // val textosSecundarios: ArrayList<String> = ArrayList()
 
     override fun getCount(): Int {
         return textosPrincipales.size
@@ -37,14 +36,14 @@ class VocabularyListAdapter(contexto: Context) : BaseAdapter() {
             holder = ViewHolder()
             holder.ivImagen = view!!.findViewById(R.id.ivImageItem) as ImageView
             holder.tvTitulo = view!!.findViewById(R.id.tvPrincipalItem)
-            holder.tvSubtitulo = view!!.findViewById(R.id.tvSecundarioItem)
+            // holder.tvSubtitulo = view!!.findViewById(R.id.tvSecundarioItem)
             view!!.setTag(holder)
         } else {
             holder = view!!.tag as ViewHolder
         }
         holder.ivImagen!!.setImageResource(imagenes[i])
         holder.tvTitulo!!.text = textosPrincipales[i]
-        holder.tvSubtitulo!!.text = textosSecundarios[i]
+        // holder.tvSubtitulo!!.text = textosSecundarios[i]
         return view
     }
 
@@ -58,7 +57,7 @@ class VocabularyListAdapter(contexto: Context) : BaseAdapter() {
     fun adicionarItem(idRecursoImage: Int, textoPrincipal: String, textoSecundario: String = "Otro texto") {
         imagenes.add(idRecursoImage)
         textosPrincipales.add(textoPrincipal)
-        textosSecundarios.add(textoSecundario)
+        // textosSecundarios.add(textoSecundario)
         //con este metodo adicionamos uno nuevo, y notificamos cambios en el adapter
         notifyDataSetChanged()
     }
@@ -66,7 +65,7 @@ class VocabularyListAdapter(contexto: Context) : BaseAdapter() {
     fun eliminarTodo() {
         imagenes.clear()
         textosPrincipales.clear()
-        textosSecundarios.clear()
+        // textosSecundarios.clear()
         notifyDataSetChanged()
     }
 
