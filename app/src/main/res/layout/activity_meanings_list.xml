@@ -1,21 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
 
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordLayoutMeaningsList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.MeaningsListActivity">
 
-    <TextView
-        android:id="@+id/tvDatosMean"
-        android:layout_width="match_parent"
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MEanings" />
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ListView
-        android:id="@+id/lvMeaningsList"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvNameItemInListMeanings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PALABRA" />
+
+        <TextView
+            android:id="@+id/tvDatosMean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Meanings" />
+
+        <ListView
+            android:id="@+id/lvMeaningsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </ListView>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddNewMeaning"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
-    </ListView>
+        android:src="@drawable/ic_baseline_add_24"
+        android:tint="@color/colorWhite"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="18dp"
+        />
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

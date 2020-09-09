@@ -176,10 +176,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
     override fun onItemClick(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
         val intent = Intent(this, MeaningsListActivity::class.java)
         intent.putExtra("id_item_vocabulary", listItems[i].id_item)
+        intent.putExtra("name_item_cobulary", listItems[i].name_item)
         startActivity(intent)
     }
 
-    /* todo methods to update and delete here */
     // Inflate menu to update, delete or sent to learn an item
     override fun onCreateContextMenu(menu: ContextMenu, v: View,
                                      menuInfo: ContextMenu.ContextMenuInfo) {

@@ -17,23 +17,56 @@ import kotlinx.android.synthetic.main.activity_add_meaning.*
 import java.util.ArrayList
 
 class AddMeaningActivity : AppCompatActivity() {
+    // Variable to connect DB
     private var db: DatabaseAdapter? = null
 
-    //lateinit var coord: CoordinatorLayout
+    // Variable to create snackbar
     lateinit var linearLayout: LinearLayout
 
+    // Variable that depend if is a new item and/or meaning
     private var FirstSaveItemVoc = true
+    // Variable that change to true whether this activity is intent to update a meaning
     private var EditionMeaning = false
+    // Variable that contains Id Item vocabulary general
     private var IdItemVoc = ""
+    // Variable that contains meaning's value if EditionMeaning will be true
+    private var IdMeaningToUpdate = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_meaning)
 
+        // Assign value from layout
         linearLayout = findViewById(R.id.lnMainParent)
 
+        // to connect to DB
         db = DatabaseAdapter(this)
 
+        if (intent.extras != null) {
+            // Is intent from List meanings or
+            val addNewMeaningFromList = intent.getBooleanExtra("new_meaning",
+                false)
+            FirstSaveItemVoc = false
+            IdItemVoc = intent.getStringExtra("id_item_vocabulary")
+            val nameItemVocfromList = intent.getStringExtra("name_item_vocabulary")
+            etNameItemVocabulary.setText(nameItemVocfromList)
+            etNameItemVocabulary.isEnabled = false
+            // If addNewMeaningFromList is false it wants to update the meaning
+            if (!addNewMeaningFromList) {
+                EditionMeaning = true
+                btnAnotherMeaning.isEnabled = false
+                val idMeaning = intent.getStringExtra("id_meaning")
+                val originDescMeaning = intent.getStringExtra("desc_original")
+                val secundaryDescMeaning = intent.getStringExtra("desc_secundary")
+                etDescOriginalMeaning.setText(originDescMeaning)
+                etDescSecundaryMeaning.setText(secundaryDescMeaning)
+                IdMeaningToUpdate = idMeaning
+            }
+            // If addNewMeaningFromList is true will keep normal flow
+        } else {
+            // It is to new Data
+            EditionMeaning = false
+        }
     }
 
     override fun onStart() {
@@ -46,6 +79,7 @@ class AddMeaningActivity : AppCompatActivity() {
         db!!.cerrar()
     }
 
+    // This function is executed when on press button finalizar
     fun saveAndFinish(view: View) {
         val descOriginalMeaning = etDescOriginalMeaning!!.text.toString()
         val descSecundaryMeaning = etDescSecundaryMeaning!!.text.toString()
@@ -70,9 +104,15 @@ class AddMeaningActivity : AppCompatActivity() {
             if (validateFieldNameItemVoc()) {
                 if (validateFieldsMeaning()) {
                     if (compareMeanings(descOriginalMeaning, descSecundaryMeaning)) {
-                        createDialogSaveData("Guardar nuevo significado",
-                            "Está seguro de guardar esta información?",
-                            true).show()
+                        if (EditionMeaning) {
+                            createDialogSaveData("Actualizar significado",
+                                "Está seguro de Actualizar esta información?",
+                                true).show()
+                        } else {
+                            createDialogSaveData("Guardar nuevo significado",
+                                "Está seguro de Guardar esta información?",
+                                true).show()
+                        }
                     } else {
                         showSnackBar("Los Significados deben ser iguales o parecerse")
                     }
@@ -85,6 +125,7 @@ class AddMeaningActivity : AppCompatActivity() {
         }
     }
 
+    // This function is executed when on press button otro siginificado
     fun addAnotherMeaning (view: View) {
         val descOriginalMeaning = etDescOriginalMeaning!!.text.toString()
         val descSecundaryMeaning = etDescSecundaryMeaning!!.text.toString()
@@ -120,12 +161,14 @@ class AddMeaningActivity : AppCompatActivity() {
         }
     }
 
+    // This function is executed when on press button cancelar
     fun cancel(view: View) {
         finish()
     }
 
+    // This method saves An item vocabulary
     fun saveItemVocabulary(nameItemVoc: String) {
-        // solo la primera vez creara un codigo alfanumerico
+        // only first time
         IdItemVoc = randomAlphanumericString()
         // At first create a word
         val itemVocabulary = ItemVocabulary(IdItemVoc, nameItemVoc,0)
@@ -133,6 +176,7 @@ class AddMeaningActivity : AppCompatActivity() {
             itemVocabulary.learned_item)
     }
 
+    // This method saves a meaning
     fun saveMeaning() {
         val idNewMeaning = randomAlphanumericString()
         val descOriginalMeaning = etDescOriginalMeaning!!.text.toString()
@@ -142,6 +186,16 @@ class AddMeaningActivity : AppCompatActivity() {
             descSecundaryMeaning)
     }
 
+    // This method updates a meaning
+    fun updateMeaning() {
+        val descOriginalMeaning = etDescOriginalMeaning!!.text.toString()
+        val descSecundaryMeaning = etDescSecundaryMeaning!!.text.toString()
+        db!!.updateMeaning(IdMeaningToUpdate, IdItemVoc,
+            descOriginalMeaning,
+            descSecundaryMeaning)
+    }
+
+    // This method creates a dialog
     fun createDialogSaveData(title: String, message: String, isToFinish: Boolean = false)
             : AlertDialog {
         val alertDialog = AlertDialog.Builder(this)
@@ -151,24 +205,39 @@ class AddMeaningActivity : AppCompatActivity() {
         alertDialog.setCancelable(false)
         //con este boton del dialgo saldremos del dialogo, es positivo asi que se ubicara a la derecha
         alertDialog.setPositiveButton("Aceptar"){ dialogInterface, i ->
+            // isToFinish contains origin of this method was called
             if (isToFinish) {
+                // It's from btn finalizar
                 if (FirstSaveItemVoc) {
+                    // First save an item Vocabulary
                     val nameItemVoc = etNameItemVocabulary!!.text.toString()
                     saveItemVocabulary(nameItemVoc)
+                    // Then save a meaning
                     saveMeaning()
                     finish()
                 } else {
-                    saveMeaning()
+                    // If EditionMeaning is true is an update to a meaning
+                    if (EditionMeaning) {
+                        updateMeaning()
+                    } else {
+                        // It is a new Meaning
+                        saveMeaning()
+                    }
                     finish()
                 }
             } else {
+                // is from btn add another meaning
                 if (FirstSaveItemVoc) {
+                    // First save an item Vocabulary
                     val nameItemVoc = etNameItemVocabulary!!.text.toString()
                     saveItemVocabulary(nameItemVoc)
+                    // Then save a meaning
                     saveMeaning()
                 } else {
+                    // Just save a meaning
                     saveMeaning()
                 }
+                // Change global variables and clear fields
                 etNameItemVocabulary.isEnabled = false
                 FirstSaveItemVoc = false
                 clearFields("addAnotherMeaning")
@@ -181,11 +250,13 @@ class AddMeaningActivity : AppCompatActivity() {
         return alertDialog.create()
     }
 
+    // This method creates and shows a Snackbar
     fun showSnackBar(message: String) {
         val snackbar = Snackbar.make(linearLayout, message, Snackbar.LENGTH_LONG)
         snackbar.show()
     }
 
+    // This method validates that field Name item not exists in DB
     fun validateExistenceItemVocabulary(nameItemVoc: String) : Boolean {
         // si esta palabra hay en DB false sino true
         var flag = false
@@ -199,6 +270,7 @@ class AddMeaningActivity : AppCompatActivity() {
         if (arrayDB.size > 0) {
             for (itemDB in arrayDB) {
                 if (itemDB.toUpperCase() == nameItemVoc.trim().toUpperCase()) {
+                    // If exists return true and break loop
                     flag = true
                     break
                 }
@@ -207,6 +279,7 @@ class AddMeaningActivity : AppCompatActivity() {
         return flag
     }
 
+    // This function validates that a field's value is not empty
     fun validateFieldNameItemVoc() :Boolean {
         if (etNameItemVocabulary.text.toString() == null ||
             etNameItemVocabulary.text.toString() == "") {
@@ -215,6 +288,7 @@ class AddMeaningActivity : AppCompatActivity() {
         return true
     }
 
+    // This function validates that field's values is not empty
     fun validateFieldsMeaning() : Boolean {
         if (etDescOriginalMeaning.text.toString() == null ||
             etDescOriginalMeaning.text.toString() == "") {
@@ -227,6 +301,7 @@ class AddMeaningActivity : AppCompatActivity() {
         return true
     }
 
+    // This method clear fields when press on add another meaning
     fun clearFields(origin: String = "") {
         if (origin == "addAnotherMeaning") {
             etDescOriginalMeaning.setText("")

@@ -48,9 +48,9 @@ class MeaningsListAdapter(contexto: Context) : BaseAdapter() {
         var tvMeaning: TextView? = null
     }
 
-    fun adicionarItem(number: String, meaning: String = "significado") {
+    fun adicionarItem(number: String, meaning: String = "") {
         numbersItem.add(number + ".")
-        meaningItem.add("Significado: " + meaning)
+        meaningItem.add(meaning)
         //con este metodo adicionamos uno nuevo, y notificamos cambios en el adapter
         notifyDataSetChanged()
     }

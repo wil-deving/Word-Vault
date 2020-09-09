@@ -10,8 +10,6 @@ class DatabaseAdapter(context: Context) {
     private val databaseHelper: DictionariesDatabaseHelper
     private var db: SQLiteDatabase? = null
 
-    //init se ejecuta como un constructor, automaticamente se ejecutara al cargar la clase
-    //en este caso una subclase de abajo
     init {
         databaseHelper = DictionariesDatabaseHelper(context)
     }
@@ -44,28 +42,19 @@ class DatabaseAdapter(context: Context) {
         return db!!.insert(Constants.MEANINGS_TABLE, null, contentValues)
     }
 
-//    fun actualizarPersona(id: Long, nombre: String, telefono: Long,
-//                          correo: String, genero: String): Int {
-//        val contentValues = ContentValues()
-//        contentValues.put(Constants.NOMBRE, nombre)
-//        contentValues.put(Constants.TELEFONO, telefono)
-//        contentValues.put(Constants.CORREO, correo)
-//        contentValues.put(Constants.GENERO, genero)
-//
-//        //necesario rescatar el id para que vaya en el where del update
-//        return db!!.update(Constants.TABLA_PERSONA, contentValues, "${Constants.ID}=?", arrayOf(id.toString() + ""))
-//    }
+    fun updateMeaning(idMeaning: String, idItemVoc: String, descOrigin: String,
+                      descSecundary: String) : Int {
+        val contentValues = ContentValues()
+        contentValues.put(Constants.MEANING_DESC_ONE, descOrigin)
+        contentValues.put(Constants.MEANING_DESC_TWO, descSecundary)
+        //necesario rescatar el id para que vaya en el where del update
+        return db!!.update(Constants.MEANINGS_TABLE, contentValues, "${Constants.MEANING_ID}=?", arrayOf(idMeaning))
+    }
 
-//    fun eliminarPersona(id: Long): Boolean {
-//        //las condiciones del argumento del where se pueden concatenar para hacer mas flitro del query
-//        return db!!.delete(Constants.TABLA_PERSONA, "${Constants.ID}=$id", null) > 0
-//    }
-//
-//    fun obtenerPersona(id: Long): Cursor {
-//        return db!!.query(Constants.TABLA_PERSONA,
-//            arrayOf(Constants.ID, Constants.NOMBRE, Constants.TELEFONO, Constants.CORREO, Constants.GENERO),
-//            "${Constants.ID}=?", arrayOf(id.toString() + ""), null, null, null)
-//    }
+    fun deleteMeaning(id: String) : Boolean {
+        //las condiciones del argumento del where se pueden concatenar para hacer mas flitro del query
+        return db!!.delete(Constants.MEANINGS_TABLE, "${Constants.MEANING_ID}='$id'", null) > 0
+    }
 
     fun getItemsLookLike(nameInput: String = "") : Cursor {
         val query =
@@ -76,14 +65,14 @@ class DatabaseAdapter(context: Context) {
         return data
     }
 
-    fun updateTypeItemVocabulary (id: String, learned: Int) : Int {
+    fun updateTypeItemVocabulary(id: String, learned: Int) : Int {
         val contentValues = ContentValues()
         contentValues.put(Constants.VOCABULARY_LEARNED_ITEM, learned)
         //necesario rescatar el id para que vaya en el where del update
         return db!!.update(Constants.ITEMS_VOCABULARY_TABLE, contentValues, "${Constants.VOCABULARY_ID_ITEM}=?", arrayOf(id))
     }
 
-    fun updateDataItemVocabulary (id: String, newNameItemV: String) : Int {
+    fun updateDataItemVocabulary(id: String, newNameItemV: String) : Int {
         val contentValues = ContentValues()
         contentValues.put(Constants.VOCABULARY_NAME_ITEM, newNameItemV)
         //necesario rescatar el id para que vaya en el where del update
@@ -97,9 +86,11 @@ class DatabaseAdapter(context: Context) {
 
     fun getMeaningsByItem(idItemVocabulary: String = "") : Cursor {
         val query =
-            " SELECT ${Constants.MEANING_DESC_ONE} " +
-            " FROM ${Constants.MEANINGS_TABLE} " +
-            " WHERE ${Constants.MEANING_VOCABULARY_ID_ITEM} = '$idItemVocabulary' "
+            " SELECT m.${Constants.MEANING_ID}, i.${Constants.VOCABULARY_ID_ITEM}, " +
+            " m.${Constants.MEANING_DESC_ONE}, m.${Constants.MEANING_DESC_TWO} " +
+            " FROM ${Constants.MEANINGS_TABLE} m INNER JOIN ${Constants.ITEMS_VOCABULARY_TABLE} i " +
+            " ON m.${Constants.MEANING_VOCABULARY_ID_ITEM} = i.${Constants.VOCABULARY_ID_ITEM} " +
+            " WHERE m.${Constants.MEANING_VOCABULARY_ID_ITEM} = '$idItemVocabulary' "
         val data = db!!.rawQuery(query,null)
         return data
     }
@@ -117,7 +108,7 @@ class DatabaseAdapter(context: Context) {
     }
 
     //clase interna, herada de SQLite para acceder a la sintax de SQLite
-    //creara la bd dbpersonas.db
+    //creara la bd
     private class DictionariesDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "dbvocabularies.db", null, 1) {
 
         override fun onCreate(db: SQLiteDatabase) {
