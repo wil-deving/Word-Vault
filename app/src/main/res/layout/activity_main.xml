@@ -12,6 +12,18 @@
         android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lista de Palabras y Expresiones"
+            android:textSize="@dimen/text_view_title"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorPrimary"
+            android:paddingTop="@dimen/padding_top_title"
+            android:paddingBottom="@dimen/padding_bottom_title"
+            android:paddingLeft="@dimen/padding_left_title"
+            />
+
         <RadioGroup
             android:id="@+id/rgOptionsItemsVocabulary"
             android:layout_width="match_parent"

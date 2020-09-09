@@ -10,6 +10,19 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tvTitleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar Nuevos Datos"
+            android:textSize="@dimen/text_view_title"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorPrimary"
+            android:paddingTop="@dimen/padding_top_title"
+            android:paddingBottom="@dimen/padding_bottom_title"
+            android:paddingLeft="@dimen/padding_left_title"
+            />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ingrese la Palabra o Expresión"
@@ -73,7 +86,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/text_view_general"
             android:layout_marginTop="@dimen/first_top_Margin"
-            android:layout_marginBottom="@dimen/bottom_general_margin"
+            android:layout_marginBottom="@dimen/bottom_textview_for_edittext"
             android:layout_marginLeft="@dimen/left_right_general_margin"
             android:layout_marginRight="@dimen/left_right_general_margin"
             />
@@ -102,7 +115,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/text_view_general"
             android:layout_marginTop="@dimen/first_top_Margin"
-            android:layout_marginBottom="@dimen/bottom_general_margin"
+            android:layout_marginBottom="@dimen/bottom_textview_for_edittext"
             android:layout_marginLeft="@dimen/left_right_general_margin"
             android:layout_marginRight="@dimen/left_right_general_margin"
             />
@@ -126,7 +139,7 @@
             android:id="@+id/btnAnotherMeaning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="35dp"
             android:layout_gravity="center"
             android:drawableLeft="@drawable/ic_baseline_add_circle_white24"
             android:drawableTint="@color/colorWhite"

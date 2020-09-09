@@ -15,16 +15,41 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lista de Significados"
+            android:textSize="@dimen/text_view_title"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorPrimary"
+            android:paddingTop="@dimen/padding_top_title"
+            android:paddingBottom="@dimen/padding_bottom_title"
+            android:paddingLeft="@dimen/padding_left_title"
+            />
+
+        <TextView
             android:id="@+id/tvNameItemInListMeanings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="PALABRA" />
+            android:gravity="center"
+            android:text="PALABRA"
+            android:textStyle="bold|italic"
+            android:textSize="@dimen/text_view_title"
+            android:textColor="#363636"
+            android:paddingTop="@dimen/padding_top_title"
+            android:paddingBottom="@dimen/padding_bottom_title"
+            android:paddingLeft="@dimen/padding_left_title"
+            />
 
         <TextView
-            android:id="@+id/tvDatosMean"
+            android:id="@+id/tvAreThereDataMeanings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Meanings" />
+            android:text="No se encontaron registros"
+            android:textSize="@dimen/text_view_general"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/bottom_general_margin"
+            android:visibility="invisible"
+            />
 
         <ListView
             android:id="@+id/lvMeaningsList"

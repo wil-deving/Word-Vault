@@ -4,11 +4,18 @@
     <dimen name="left_right_general_margin">20dp</dimen>
     <dimen name="bottom_general_margin">10dp</dimen>
 
+    <dimen name="bottom_textview_for_edittext">2dp</dimen>
+
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="padding_general_components">4dp</dimen>
 
+    <dimen name="padding_top_title">13dp</dimen>
+    <dimen name="padding_bottom_title">13dp</dimen>
+    <dimen name="padding_left_title">15dp</dimen>
+
     <dimen name="text_view_general">20sp</dimen>
+    <dimen name="text_view_title">22sp</dimen>
 
     <dimen name="text_button_general">16sp</dimen>
 </resources>

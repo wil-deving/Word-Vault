@@ -53,6 +53,7 @@ class AddMeaningActivity : AppCompatActivity() {
             etNameItemVocabulary.isEnabled = false
             // If addNewMeaningFromList is false it wants to update the meaning
             if (!addNewMeaningFromList) {
+                tvTitleView.setText("Actualizar Datos")
                 EditionMeaning = true
                 btnAnotherMeaning.isEnabled = false
                 val idMeaning = intent.getStringExtra("id_meaning")

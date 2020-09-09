@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import com.gmail.wil.myownvocabulary.R
 import com.gmail.wil.myownvocabulary.db.DatabaseAdapter
 import com.gmail.wil.myownvocabulary.listsAdapter.MeaningsListAdapter
@@ -77,7 +78,7 @@ class MeaningsListActivity : AppCompatActivity(), AdapterView.OnItemClickListene
         var numberMeaning = 0
         val cursor = db!!.getMeaningsByItem(idItemVoc)
         if (cursor.moveToFirst()) {
-            tvDatosMean.text = "Hay datos"
+            tvAreThereDataMeanings.setVisibility(View.INVISIBLE)
             do {
                 numberMeaning++
                 val meaning = Meaning(cursor.getString(0),
@@ -90,7 +91,7 @@ class MeaningsListActivity : AppCompatActivity(), AdapterView.OnItemClickListene
                 meaningsList.add(meaning)
             } while (cursor.moveToNext())
         } else {
-            tvDatosMean.text = "No Hay datos"
+            tvAreThereDataMeanings.setVisibility(View.VISIBLE)
         }
         adaptadorLista!!.notifyDataSetChanged()
     }

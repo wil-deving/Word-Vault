@@ -11,7 +11,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Training" />
+            android:text="Práctica por Significados"
+            android:textSize="@dimen/text_view_title"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorPrimary"
+            android:paddingTop="@dimen/padding_top_title"
+            android:paddingBottom="@dimen/padding_bottom_title"
+            android:paddingLeft="@dimen/padding_left_title"
+            />
 
     </LinearLayout>
 
