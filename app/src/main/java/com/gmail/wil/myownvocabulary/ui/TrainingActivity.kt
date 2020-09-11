@@ -4,42 +4,38 @@ import android.database.Cursor
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.AdapterView
+import android.widget.*
 import com.gmail.wil.myownvocabulary.R
 import com.gmail.wil.myownvocabulary.db.DatabaseAdapter
-import com.gmail.wil.myownvocabulary.listsAdapter.TrainingOptionsListAdapter
 import com.gmail.wil.myownvocabulary.model.ItemVocabulary
 import com.gmail.wil.myownvocabulary.model.Meaning
-import kotlinx.android.synthetic.main.activity_training.*
 import kotlinx.android.synthetic.main.item_training_meaning.view.*
 
-class TrainingActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
-    // Variables to list words
-    private var adaptadorLista: TrainingOptionsListAdapter? = null
-    private val ListMeanings = ArrayList<Meaning>()
+class TrainingActivity : AppCompatActivity() {
 
     // Variables to connect DB
     private var db: DatabaseAdapter? = null
 
+    // Variable to arm cardView into it
+    private var MainLayout : LinearLayout? = null
+
     private var IndiceItemVocabulary = 0
     private var ListItemsVocabulary = ArrayList<ItemVocabulary>()
 
-    var meaningsSelected = ArrayList<Boolean>()
-
+    private val ListMeanings = ArrayList<Meaning>()
+    private var meaningsSelected = ArrayList<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_training)
 
-        // building list words
-        lvOptionsMeanings!!.onItemClickListener = this
-        adaptadorLista = TrainingOptionsListAdapter(this)
-        lvOptionsMeanings!!.adapter = adaptadorLista
-        registerForContextMenu(lvOptionsMeanings)
-
         // connect DB
         db = DatabaseAdapter(this)
+
+        // get layout linear
+        MainLayout = findViewById(R.id.llMainMeaningsTaining) as LinearLayout
 
     }
 
@@ -50,7 +46,6 @@ class TrainingActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         ListItemsVocabulary = getDataItems("tolearn")
         // execute method that charge data meanings by id item and charge list
         getMeaningsForItem()
-
     }
 
     override fun onStop() {
@@ -58,9 +53,6 @@ class TrainingActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         db!!.cerrar()
     }
 
-    // Method receive two parameters
-    // filter tolearn or learned and makes a query to SQLite
-    // textsearch text input in Search View also makes a query to SQLite
     fun getDataItems(listFilter: String) : ArrayList<ItemVocabulary> {
         var listItemsVocabulary = ArrayList<ItemVocabulary>()
         var cursor: Cursor? = null
@@ -100,26 +92,39 @@ class TrainingActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         return listMeanings
     }
 
-    // This function builds list that recieve from getDataItems()
     fun chargeAdapterList(list: ArrayList<Meaning>) {
         ListMeanings.clear()
         meaningsSelected.clear()
-        adaptadorLista!!.eliminarTodo()
         var i = 0
         if (list.size > 0) {
             list.forEach {
-                i++
-                adaptadorLista!!.adicionarItem(i.toString(), it.original_description)
+                val itemView = LayoutInflater.from(this).
+                    inflate(R.layout.item_training_meaning, MainLayout, false)
+                itemView.id = i
+                itemView!!.tvMeaningTraining.text = it.original_description
+                itemView!!.cvItemMeaningTraining.setOnClickListener {
+                    onClickItem(itemView.id, itemView)
+                }
+                MainLayout!!.addView(itemView)
                 meaningsSelected.add(false)
                 ListMeanings.add(it)
+                i++
             }
+        } else {
+            // no hay significados para esta palabra
+        }
+    }
+
+    fun onClickItem(position: Int, view: View) {
+        Toast.makeText(this, "Presiono $position", Toast.LENGTH_SHORT).show()
+        if (!meaningsSelected[position]) {
+            view.cvItemMeaningTraining.setCardBackgroundColor(Color.CYAN)
+            meaningsSelected[position] = true
 
         } else {
-
-            // no hay significados para esta palabra
-
+            view.cvItemMeaningTraining.setCardBackgroundColor(Color.WHITE)
+            meaningsSelected[position] = false
         }
-        adaptadorLista!!.notifyDataSetChanged()
     }
 
     fun nextItemVocabulary (view: View) {
@@ -127,19 +132,4 @@ class TrainingActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         getMeaningsForItem()
     }
 
-    override fun onItemClick(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-
-        // TODO Hacer commit!!!!!!!!
-
-
-        if (!meaningsSelected[i]) {
-            adapterView.getChildAt(i).llItem.
-            setBackgroundColor(Color.argb(100, 93, 250, 73))
-            meaningsSelected[i] = true
-        } else {
-            adapterView.getChildAt(i).llItem.
-            setBackgroundColor(Color.WHITE)
-            meaningsSelected[i] = false
-        }
-    }
 }

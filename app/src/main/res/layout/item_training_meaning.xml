@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cvItemMeaningTraining"
-        card_view:cardBackgroundColor="@null"
+        card_view:cardBackgroundColor="@color/colorWhite"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="5dp"
         card_view:contentPadding="0dp"
@@ -21,7 +21,6 @@
         android:clickable="false">
 
         <LinearLayout
-            android:id="@+id/llItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
