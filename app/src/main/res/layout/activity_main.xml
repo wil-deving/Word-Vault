@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
@@ -93,11 +94,12 @@
             android:id="@+id/tvAreThereData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No se encontaron registros"
+            android:layout_marginLeft="@dimen/left_right_general_margin"
+            android:layout_marginRight="@dimen/left_right_general_margin"
+            android:text="No se encontaron Registros"
             android:textSize="@dimen/text_view_general"
             android:gravity="center"
             android:layout_marginBottom="@dimen/bottom_general_margin"
-            android:visibility="invisible"
             />
 
         <ListView

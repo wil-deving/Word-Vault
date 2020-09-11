@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cvItemMeaningTraining"
+        card_view:cardBackgroundColor="@null"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="5dp"
+        card_view:contentPadding="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="@dimen/left_right_general_margin"
+        android:layout_marginRight="@dimen/left_right_general_margin"
+        android:foreground="?selectableItemBackground"
+        android:clickable="false">
+
+        <LinearLayout
+            android:id="@+id/llItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:orientation="vertical">
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvOptionNumberTraining"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Opcion 1"-->
+<!--                android:textSize="@dimen/text_view_general"-->
+<!--                android:textColor="@color/colorBlack"-->
+<!--                android:paddingTop="15dp"-->
+<!--                android:paddingBottom="15dp"-->
+<!--                android:paddingLeft="@dimen/padding_left_title"-->
+<!--                />-->
+
+            <TextView
+                android:id="@+id/tvMeaningTraining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="@dimen/padding_left_title"
+                android:background="@null"
+                android:text="Este es el significado"
+                android:textSize="@dimen/text_view_item_meaning"
+                android:textColor="@color/colorBlack"
+                />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

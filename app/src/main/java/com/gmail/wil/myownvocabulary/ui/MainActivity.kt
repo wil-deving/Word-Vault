@@ -5,6 +5,7 @@ import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ContextMenu
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
@@ -110,13 +111,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         db!!.cerrar()
     }
 
-    override fun onPause() {
-        super.onPause()
-        // to hide buttons of FAB
-        // hideFAB()
-        // STATUS = false
-    }
-
     // Function when press on item on radio
     fun onClickRadioButton(typeItemsVoc: String, textSearch: String = "") {
         chargeAdapterList(getDataItems(typeItemsVoc, textSearch))
@@ -159,7 +153,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         listItems.clear()
         adaptadorLista!!.eliminarTodo()
         if (list.size > 0) {
-            tvAreThereData.setVisibility(View.INVISIBLE)
+            //tvAreThereData.setVisibility(View.VISIBLE)
+            //tvAreThereData.setGr
+            tvAreThereData.setText("${list.size} Registros Encontrados")
+            tvAreThereData.setGravity(Gravity.RIGHT)
             for (item in list) {
                 if (item.learned_item == 1) idResourceImage = R.drawable.ic_baseline_spellcheck_24
                 else idResourceImage = R.drawable.ic_baseline_priority_high_24
@@ -167,7 +164,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
                 listItems.add(ItemVocabulary(item.id_item, item.name_item, item.learned_item))
             }
         } else {
-            tvAreThereData.setVisibility(View.VISIBLE)
+            tvAreThereData.setText("No se Encontaron Registros")
+            tvAreThereData.setGravity(Gravity.CENTER)
         }
         adaptadorLista!!.notifyDataSetChanged()
     }

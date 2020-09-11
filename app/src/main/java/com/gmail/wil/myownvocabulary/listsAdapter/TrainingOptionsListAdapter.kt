@@ -8,13 +8,13 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.gmail.wil.myownvocabulary.R
 
-class MeaningsListAdapter(contexto: Context) : BaseAdapter() {
+class TrainingOptionsListAdapter(contexto: Context) : BaseAdapter() {
     val inflater: LayoutInflater = LayoutInflater.from(contexto)
-    val numbersItem: ArrayList<String> = ArrayList()
+    // val numbersItem: ArrayList<String> = ArrayList()
     val meaningItem: ArrayList<String> = ArrayList()
 
     override fun getCount(): Int {
-        return numbersItem.size
+        return meaningItem.size
     }
 
     override fun getItem(i: Int): Any {
@@ -29,33 +29,33 @@ class MeaningsListAdapter(contexto: Context) : BaseAdapter() {
         var view = view
         val holder: ViewHolder
         if (view == null) {
-            view = inflater.inflate(R.layout.item_meaning_list, null)
+            view = inflater.inflate(R.layout.item_training_meaning, null)
             holder = ViewHolder()
-            holder.tvNumber = view!!.findViewById(R.id.tvNumMeaning)
-            holder.tvMeaning = view!!.findViewById(R.id.tvMeaning)
+            // holder.tvNumberOption = view!!.findViewById(R.id.tvOptionNumberTraining)
+            holder.tvMeaning = view!!.findViewById(R.id.tvMeaningTraining)
             view!!.setTag(holder)
         } else {
             holder = view!!.tag as ViewHolder
         }
-        holder.tvNumber!!.text = numbersItem[i]
+        // holder.tvNumberOption!!.text = numbersItem[i]
         holder.tvMeaning!!.text = meaningItem[i]
         return view
     }
 
     internal class ViewHolder {
-        var tvNumber: TextView? = null
+        var tvNumberOption: TextView? = null
         var tvMeaning: TextView? = null
     }
 
     fun adicionarItem(number: String, meaning: String = "") {
-        numbersItem.add(number + ".")
+        // numbersItem.add("Opción " + number)
         meaningItem.add(meaning)
         //con este metodo adicionamos uno nuevo, y notificamos cambios en el adapter
         notifyDataSetChanged()
     }
 
     fun eliminarTodo() {
-        numbersItem.clear()
+        // numbersItem.clear()
         meaningItem.clear()
         notifyDataSetChanged()
     }
