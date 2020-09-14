@@ -1,5 +1,7 @@
 package com.gmail.wil.myownvocabulary.managers
 
+import com.gmail.wil.myownvocabulary.model.Meaning
+
 fun randomAlphanumericString(): String {
     val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
     val outputStrLength = (1..36).shuffled().first()
@@ -25,4 +27,18 @@ fun compareMeanings(textOne: String = "", textTwo: String = "") : Boolean {
         println("------->" + sumWeightTotal)
         return (sumWeightTotal > 25.00)
     }
+}
+
+fun messArrayToList(corrects: ArrayList<Meaning>, wrongs: ArrayList<Meaning>) : ArrayList<Meaning> {
+    var finalArrayList = ArrayList<Meaning>()
+    finalArrayList.addAll(corrects)
+    // TODO selccionar todas las malas elegir 3 aleatoriamente y
+    //  adicionar al array de correctos
+    // y retornar
+
+    finalArrayList.addAll(wrongs)
+
+    // Desordenar todo el array
+
+    return finalArrayList
 }

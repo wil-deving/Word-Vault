@@ -95,6 +95,17 @@ class DatabaseAdapter(context: Context) {
         return data
     }
 
+    fun getDistinctMeaningsByItem(idItemVocabulary: String = "") : Cursor {
+        val query =
+            " SELECT m.${Constants.MEANING_ID}, i.${Constants.VOCABULARY_ID_ITEM}, " +
+                    " m.${Constants.MEANING_DESC_ONE}, m.${Constants.MEANING_DESC_TWO} " +
+                    " FROM ${Constants.MEANINGS_TABLE} m INNER JOIN ${Constants.ITEMS_VOCABULARY_TABLE} i " +
+                    " ON m.${Constants.MEANING_VOCABULARY_ID_ITEM} = i.${Constants.VOCABULARY_ID_ITEM} " +
+                    " WHERE m.${Constants.MEANING_VOCABULARY_ID_ITEM} != '$idItemVocabulary' "
+        val data = db!!.rawQuery(query,null)
+        return data
+    }
+
     fun getItemsVocabularyFiltered(filterType: String, textSearch: String): Cursor {
         var query =
             " SELECT ${Constants.VOCABULARY_ID_ITEM}, ${Constants.VOCABULARY_NAME_ITEM}, " +

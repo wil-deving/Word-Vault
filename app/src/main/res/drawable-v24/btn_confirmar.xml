@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Sintaxis para el diseño personalizado de un boton-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--En este item se especifica android:state_pressed="true".- que nos
+    indica los efectos que tendra este boton cuando se lo oprima
+    -en el shape:
+    .-en corners con radius: especificamos la pronunciacion que tendran las esquinas
+    .-en solid con color: indicamos el color que tendra el boton cuando se oprima en este
+    .-en stroke con color: indicamos el color que tendra el borde del boton al ser oprimido
+    .-en stroke con width: indicamos el ancho que tendra el borde al ser oprimido
+    -->
+    <item
+        android:state_pressed="true">
+        <shape>
+            <corners
+                android:topLeftRadius="4dp"
+                android:topRightRadius="4dp"
+                android:bottomRightRadius="0dp"
+                android:bottomLeftRadius="0dp"/>
+            <solid
+                android:color="@color/colorSemiSuccess"/>
+            <stroke
+                android:color="@color/colorSecundary"
+                android:width="1dp"/>
+        </shape>
+    </item>
+    <!--En este item que es el normal (cuando no se lo esta oprimiendo)solo ponemos
+    atributos que deseemos-->
+    <item>
+        <shape>
+            <corners
+                android:topLeftRadius="4dp"
+                android:topRightRadius="4dp"
+                android:bottomRightRadius="0dp"
+                android:bottomLeftRadius="0dp"/>
+            <solid
+                android:color="@color/colorWhite"/>
+            <stroke
+                android:color="@color/colorBlack"
+                android:width="1dp"/>
+        </shape>
+    </item>
+</selector>

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:id="@+id/llHeaderTraining"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -21,17 +23,127 @@
             android:paddingBottom="@dimen/padding_bottom_title"
             android:paddingLeft="@dimen/padding_left_title"/>
 
-        <LinearLayout
-            android:id="@+id/llMainMeaningsTaining"
+        <TextView
+            android:id="@+id/tvItemHead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_marginLeft="@dimen/left_right_general_margin"
+            android:layout_marginRight="@dimen/left_right_general_margin"
+            android:layout_marginBottom="@dimen/bottom_general_margin"
+            android:layout_marginTop="20dp"
+            android:text="PALABRA"
+            android:textSize="@dimen/text_view_title"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:visibility="invisible"
+            />
+
+        <TextView
+            android:id="@+id/tvAreThereDataMeaningsTrain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/left_right_general_margin"
+            android:layout_marginRight="@dimen/left_right_general_margin"
+            android:text="No se encontaron registros"
+            android:textSize="@dimen/text_view_general"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/bottom_general_margin"
+            />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/llFooterTraining"
+        android:layout_below="@id/llHeaderTraining"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <LinearLayout
+                android:id="@+id/llMainMeaningsTaining"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/llFooterTraining"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <Button
+                android:id="@+id/btnNextItemTraining"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_confirmar"
+                android:text="Siguiente"
+                android:textSize="@dimen/text_view_general"
+                android:textColor="@color/colorBlack"
+                android:textAllCaps="false"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:onClick="nextItemVocabulary"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</ScrollView>
+</RelativeLayout>
+
+
+
+<!--<ScrollView android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android" >-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical"-->
+<!--        xmlns:android="http://schemas.android.com/apk/res/android">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Práctica por Significados"-->
+<!--            android:textSize="@dimen/text_view_title"-->
+<!--            android:textColor="@color/colorWhite"-->
+<!--            android:background="@color/colorPrimary"-->
+<!--            android:paddingTop="@dimen/padding_top_title"-->
+<!--            android:paddingBottom="@dimen/padding_bottom_title"-->
+<!--            android:paddingLeft="@dimen/padding_left_title"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/llMainMeaningsTaining"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical" >-->
+
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
+
+<!--</ScrollView>-->
 
 
 
