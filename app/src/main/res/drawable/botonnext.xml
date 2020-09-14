@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Sintaxis para el diseño personalizado de un boton-->
+<!--Sintaxis para el diseño personalizado de un botonnext-->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!--En este item se especifica android:state_pressed="true".- que nos
-    indica los efectos que tendra este boton cuando se lo oprima
+    indica los efectos que tendra este botonnext cuando se lo oprima
     -en el shape:
     .-en corners con radius: especificamos la pronunciacion que tendran las esquinas
-    .-en solid con color: indicamos el color que tendra el boton cuando se oprima en este
-    .-en stroke con color: indicamos el color que tendra el borde del boton al ser oprimido
+    .-en solid con color: indicamos el color que tendra el botonnext cuando se oprima en este
+    .-en stroke con color: indicamos el color que tendra el borde del botonnext al ser oprimido
     .-en stroke con width: indicamos el ancho que tendra el borde al ser oprimido
     -->
     <item

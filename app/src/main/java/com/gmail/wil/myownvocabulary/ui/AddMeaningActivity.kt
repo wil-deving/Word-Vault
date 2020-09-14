@@ -204,7 +204,7 @@ class AddMeaningActivity : AppCompatActivity() {
         alertDialog.setMessage(message)
         //prohibimos que al hacer click en cualquier lugar de la pantalla el dialogo desaparezca
         alertDialog.setCancelable(false)
-        //con este boton del dialgo saldremos del dialogo, es positivo asi que se ubicara a la derecha
+        //con este botonnext del dialgo saldremos del dialogo, es positivo asi que se ubicara a la derecha
         alertDialog.setPositiveButton("Aceptar"){ dialogInterface, i ->
             // isToFinish contains origin of this method was called
             if (isToFinish) {
@@ -244,7 +244,7 @@ class AddMeaningActivity : AppCompatActivity() {
                 clearFields("addAnotherMeaning")
             }
         }
-        //el boton neutral se ubica a la izquierda, esto por reglas de diseño
+        //el botonnext neutral se ubica a la izquierda, esto por reglas de diseño
         alertDialog.setNeutralButton("Cancelar"){ dialogInterface, i ->
             // Toast.makeText(this, "Click en cancelar", Toast.LENGTH_SHORT).show()
         }

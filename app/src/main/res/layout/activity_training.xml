@@ -95,14 +95,14 @@
                 android:id="@+id/btnNextItemTraining"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_confirmar"
                 android:text="Siguiente"
                 android:textSize="@dimen/text_view_general"
                 android:textColor="@color/colorBlack"
                 android:textAllCaps="false"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
-                android:onClick="nextItemVocabulary"/>
+                android:onClick="nextItemVocabulary"
+                android:background="@drawable/botonnext"/>
 
         </LinearLayout>
 

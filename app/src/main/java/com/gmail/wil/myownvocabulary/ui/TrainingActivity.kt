@@ -123,8 +123,10 @@ class TrainingActivity : AppCompatActivity() {
                 if (listMeanings.size > 0) {
                     if (listWrongMeanings.size > 0) {
                         tvItemHead!!.text = itemVoc.name_item
+                        tvItemHead!!.setVisibility(View.VISIBLE)
+                        tvAreThereDataMeaningsTrain!!.text =
+                            "Seleccione ${listMeanings.size} Opciones"
                         tvAreThereDataMeaningsTrain!!.setVisibility(View.VISIBLE)
-                        tvAreThereDataMeaningsTrain!!.text = "Seleccione ${listMeanings.size} Opciones"
                         chargeAdapterList(finalList)
                     } else {
                         // there are not other meanings to start practicing
