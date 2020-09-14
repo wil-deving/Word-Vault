@@ -29,16 +29,34 @@ fun compareMeanings(textOne: String = "", textTwo: String = "") : Boolean {
     }
 }
 
+// This function receives two list and mix them and shuffle those list and return
 fun messArrayToList(corrects: ArrayList<Meaning>, wrongs: ArrayList<Meaning>) : ArrayList<Meaning> {
-    var finalArrayList = ArrayList<Meaning>()
-    finalArrayList.addAll(corrects)
-    // TODO selccionar todas las malas elegir 3 aleatoriamente y
-    //  adicionar al array de correctos
-    // y retornar
-
-    finalArrayList.addAll(wrongs)
-
-    // Desordenar todo el array
-
+    val finalArrayList = ArrayList<Meaning>()
+    // Get list of correct shuffled (a item doesn't have more than 100 meanings!)
+    val finalCorrects = getShuffledForNumber(corrects, 100)
+    // To add correct list to list to return
+    finalArrayList.addAll(finalCorrects)
+    // Get list of wrongs shuffled and only 3 items
+    val finalWrongs = getShuffledForNumber(wrongs, 3)
+    // To add this list to list of return
+    finalArrayList.addAll(finalWrongs)
+    // To shuffle all of items in  list return
+    finalArrayList.shuffle()
     return finalArrayList
+}
+
+// This function recieve a list to shuffle having as limit count parameter
+fun getShuffledForNumber(list: ArrayList<Meaning>, count: Int) : ArrayList<Meaning> {
+    val arrayCounted = ArrayList<Meaning>()
+    list.shuffle()
+    var j = 1
+    for (i in list) {
+        if (j <= count) {
+            arrayCounted.add(i)
+        }else {
+            break
+        }
+        j++
+    }
+    return arrayCounted
 }

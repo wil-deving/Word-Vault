@@ -115,13 +115,14 @@ class TrainingActivity : AppCompatActivity() {
                 val listMeanings = getDataMeanings(itemVoc.id_item)
                 // to get data wrong meanigs for this item
                 val listWrongMeanings = getDataWrongMeanings(itemVoc.id_item)
-                // Mix data and get data
-                var finalList = messArrayToList(listMeanings, listWrongMeanings)
+                // If is the last or not item to practice
                 if (IndiceItemVocabulary < (ListItemsVocabulary.size - 1))
                     btnNextItemTraining!!.text = "Siguiente"
                 else btnNextItemTraining!!.text = "Finalizar"
                 if (listMeanings.size > 0) {
                     if (listWrongMeanings.size > 0) {
+                        // Mix data and get data
+                        val finalList = messArrayToList(listMeanings, listWrongMeanings)
                         tvItemHead!!.text = itemVoc.name_item
                         tvItemHead!!.setVisibility(View.VISIBLE)
                         tvAreThereDataMeaningsTrain!!.text =
@@ -143,6 +144,7 @@ class TrainingActivity : AppCompatActivity() {
                 finish()
             }
         } else {
+            // When there are not data in items vocabulary
             tvAreThereDataMeaningsTrain!!.text = "No Existen Palabras o Expresiones para Practicar"
             btnNextItemTraining!!.text = "Salir"
         }
