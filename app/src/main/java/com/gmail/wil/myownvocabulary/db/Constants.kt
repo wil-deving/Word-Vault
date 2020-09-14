@@ -17,4 +17,11 @@ object Constants {
     val MEANING_DESC_ONE = "descriptionone"
     val MEANING_DESC_TWO = "descriptiontwo"
 
+    // TABLE practice
+    val PRACTICE_TABLE = "practice"
+    // COLUMNS FOR PRACTICE TABLE
+    val PRACTICE_ID = "idpractice"
+    val PRACTICE_VOCABULARY_ID_ITEM = "iditemvocabulary"
+    val SHOTS = "shots"
+
 }

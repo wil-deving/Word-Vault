@@ -173,8 +173,11 @@ class AddMeaningActivity : AppCompatActivity() {
         IdItemVoc = randomAlphanumericString()
         // At first create a word
         val itemVocabulary = ItemVocabulary(IdItemVoc, nameItemVoc,0)
+        // Create ITEMVOCABULARY
         db!!.addItemVocabulary(itemVocabulary.id_item, itemVocabulary.name_item,
             itemVocabulary.learned_item)
+        // Create row to work after when we have to practice
+        db!!.addDataPractice(randomAlphanumericString(), itemVocabulary.id_item)
     }
 
     // This method saves a meaning

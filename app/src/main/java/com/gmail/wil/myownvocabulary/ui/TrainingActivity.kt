@@ -24,11 +24,17 @@ class TrainingActivity : AppCompatActivity() {
     // Variable to arm cardView into it
     private var MainLayout : LinearLayout? = null
 
-    private var IndiceItemVocabulary = 0
+    // Variable to get list of items to learn and going mapping
     private var ListItemsVocabulary = ArrayList<ItemVocabulary>()
+    private var IndiceItemVocabulary = 0
 
-    private val ListMeanings = ArrayList<Meaning>()
+    // Variable to Know which meaning was selected or deselected
     private var meaningsSelected = ArrayList<Boolean>()
+    // Variable that counts meanings selected
+    private var countMeaningsSelected = 0
+
+    // Variable to set with the correct meanings of an item
+    private var ListCorrectMeanings = ArrayList<Meaning>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,8 +111,9 @@ class TrainingActivity : AppCompatActivity() {
 
 
     fun getMeaningsForItem () {
-        // Seccion para limpiar data global corrects and wrongs
-
+        // Clear global list of correct meanings
+        ListCorrectMeanings.clear()
+        countMeaningsSelected = 0
 
         if (ListItemsVocabulary.size > 0) {
             if (IndiceItemVocabulary < ListItemsVocabulary.size) {
@@ -121,6 +128,8 @@ class TrainingActivity : AppCompatActivity() {
                 else btnNextItemTraining!!.text = "Finalizar"
                 if (listMeanings.size > 0) {
                     if (listWrongMeanings.size > 0) {
+                        // Set the global list of correct meanings
+                        ListCorrectMeanings = listMeanings
                         // Mix data and get data
                         val finalList = messArrayToList(listMeanings, listWrongMeanings)
                         tvItemHead!!.text = itemVoc.name_item
@@ -151,57 +160,70 @@ class TrainingActivity : AppCompatActivity() {
     }
 
     fun chargeAdapterList(list: ArrayList<Meaning>) {
-        ListMeanings.clear()
         meaningsSelected.clear()
         MainLayout!!.removeAllViews()
         var i = 0
-        if (list.size > 0) {
-            list.forEach {
-                val itemView = LayoutInflater.from(this).
-                    inflate(R.layout.item_training_meaning, MainLayout, false)
-                itemView.id = i
-                itemView!!.tvMeaningTraining.text = it.original_description
-                itemView!!.cvItemMeaningTraining.setOnClickListener {
-                    onClickItem(itemView.id, itemView)
-                }
-                MainLayout!!.addView(itemView)
-                meaningsSelected.add(false)
-                ListMeanings.add(it)
-                i++
+        list.forEach {
+            val itemView = LayoutInflater.from(this).
+                inflate(R.layout.item_training_meaning, MainLayout, false)
+            itemView.id = i
+            itemView!!.tvMeaningTraining.text = it.original_description
+            itemView!!.cvItemMeaningTraining.setOnClickListener {
+                onClickItem(itemView.id, itemView)
             }
-        } else {
-
-            // TODO tal vez no requiera validacion en esta parte
-            // no hay significados para esta palabra
+            MainLayout!!.addView(itemView)
+            meaningsSelected.add(false)
+            i++
         }
     }
 
     fun onClickItem(position: Int, view: View) {
         // Toast.makeText(this, "Presiono $position", Toast.LENGTH_SHORT).show()
         if (!meaningsSelected[position]) {
-            view.cvItemMeaningTraining.setCardBackgroundColor(Color.CYAN)
-            meaningsSelected[position] = true
-
+            if (countMeaningsSelected < ListCorrectMeanings.size) {
+                countMeaningsSelected++
+                view.cvItemMeaningTraining.setCardBackgroundColor(Color.CYAN)
+                meaningsSelected[position] = true
+            } else {
+                Toast.makeText(this,
+                "Solo puede seleccionar ${ListCorrectMeanings.size} Opciones",
+                Toast.LENGTH_SHORT).show()
+            }
+//            Toast.makeText(this, "selecciono $countMeaningsSelected", Toast.LENGTH_SHORT).show()
         } else {
             view.cvItemMeaningTraining.setCardBackgroundColor(Color.WHITE)
+            countMeaningsSelected--
             meaningsSelected[position] = false
+//            Toast.makeText(this, "selecciono $countMeaningsSelected", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun nextItemVocabulary (view: View) {
-        // Toast.makeText(this, "PRESS", Toast.LENGTH_SHORT).show()
+         Toast.makeText(this, "PRESS $countMeaningsSelected", Toast.LENGTH_SHORT).show()
+        if (countMeaningsSelected == ListCorrectMeanings.size) {
+//            Toast.makeText(this, "PROGRAAM", Toast.LENGTH_SHORT).show()
 
+
+
+
+            // Here TTT
+        } else {
+            Toast.makeText(this,
+                "Falta Seleccionar Opciones",
+                Toast.LENGTH_SHORT).show()
+        }
+
+        // logica para practica
+
+        /* TTT
         if (IndiceItemVocabulary < (ListItemsVocabulary.size - 1)) {
-            // logica para practica
-
-
             IndiceItemVocabulary++
             getMeaningsForItem()
-
         } else {
-            // logica para practica
             finish()
         }
+        */
+
 
     }
 

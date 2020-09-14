@@ -32,6 +32,14 @@ class DatabaseAdapter(context: Context) {
         return db!!.insert(Constants.ITEMS_VOCABULARY_TABLE, null, contentValues)
     }
 
+    fun addDataPractice(idPractice: String, idItemVocabulary: String) : Long {
+        val contentValues = ContentValues()
+        contentValues.put(Constants.PRACTICE_ID, idPractice)
+        contentValues.put(Constants.PRACTICE_VOCABULARY_ID_ITEM, idItemVocabulary)
+        contentValues.put(Constants.SHOTS, 0)
+        return db!!.insert(Constants.PRACTICE_TABLE, null, contentValues)
+    }
+
     fun addMeaning(idMeaning: String, idItemVocabulary: String,
                    descOne: String, descTwo: String) : Long {
         val contentValues = ContentValues()
@@ -82,6 +90,16 @@ class DatabaseAdapter(context: Context) {
     fun deleteItemVocabulary(id: String) : Boolean {
         //las condiciones del argumento del where se pueden concatenar para hacer mas flitro del query
         return db!!.delete(Constants.ITEMS_VOCABULARY_TABLE, "${Constants.VOCABULARY_ID_ITEM}='$id'", null) > 0
+    }
+
+    fun deleteMeaningsByItem(idItemVocabulary: String) : Boolean {
+        return db!!.delete(Constants.MEANINGS_TABLE,
+            "${Constants.MEANING_VOCABULARY_ID_ITEM}='$idItemVocabulary'", null) > 0
+    }
+
+    fun deletePracticeByItem(idItemVocabulary: String) : Boolean{
+        return db!!.delete(Constants.PRACTICE_TABLE,
+            "${Constants.PRACTICE_VOCABULARY_ID_ITEM}='$idItemVocabulary'", null) > 0
     }
 
     fun getMeaningsByItem(idItemVocabulary: String = "") : Cursor {
@@ -138,11 +156,18 @@ class DatabaseAdapter(context: Context) {
                     "${Constants.MEANING_DESC_ONE} TEXT NOT NULL, " +
                     "${Constants.MEANING_DESC_TWO} TEXT NOT NULL )"
             )
+            db.execSQL(
+                "CREATE TABLE ${Constants.PRACTICE_TABLE} (" +
+                    "${Constants.PRACTICE_ID} TEXT PRIMARY KEY, " +
+                    "${Constants.PRACTICE_VOCABULARY_ID_ITEM} TEXT NOT NULL, " +
+                    "${Constants.SHOTS} INTEGER )"
+            )
         }
 
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
             db.execSQL("DROP TABLE IF EXISTS ${Constants.ITEMS_VOCABULARY_TABLE}")
             db.execSQL("DROP TABLE IF EXISTS ${Constants.MEANINGS_TABLE}")
+            db.execSQL("DROP TABLE IF EXISTS ${Constants.PRACTICE_TABLE}")
             onCreate(db)
         }
     }

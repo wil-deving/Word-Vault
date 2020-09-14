@@ -232,7 +232,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
             if (origin == "sendItemToLearn") {
                 db!!.updateTypeItemVocabulary(idItemV, 0)
             } else if (origin == "deleteItem") {
+                // Delete item vocabulary, its meanings and its practices
                 db!!.deleteItemVocabulary(idItemV)
+                db!!.deleteMeaningsByItem(idItemV)
+                db!!.deletePracticeByItem(idItemV)
             }
             // update list of items
             chargeAdapterList(getDataItems(FilterList, TextSearched))
