@@ -4,13 +4,14 @@ import android.database.Cursor
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import androidx.core.view.isVisible
 import com.gmail.wil.myownvocabulary.R
 import com.gmail.wil.myownvocabulary.db.DatabaseAdapter
 import com.gmail.wil.myownvocabulary.managers.messArrayToList
+import com.gmail.wil.myownvocabulary.model.ItemPractice
 import com.gmail.wil.myownvocabulary.model.ItemVocabulary
 import com.gmail.wil.myownvocabulary.model.Meaning
 import kotlinx.android.synthetic.main.activity_training.*
@@ -35,6 +36,12 @@ class TrainingActivity : AppCompatActivity() {
 
     // Variable to set with the correct meanings of an item
     private var ListCorrectMeanings = ArrayList<Meaning>()
+
+    // Variable that contains all of meanings corrects and wrongs
+    private var AllMeaningsList = ArrayList<Meaning>()
+
+
+    private var MEANINGSTOEVALUATE = ArrayList<Meaning>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,10 +116,25 @@ class TrainingActivity : AppCompatActivity() {
         return listMeanings
     }
 
+    fun getDataPracticeItem(idItemVoc: String) : ItemPractice {
+        var itemPractice = ItemPractice("", "", 0)
+        val cursor = db!!.getPracticeByItem(idItemVoc)
+        if (cursor!!.moveToFirst()) {
+            do {
+                itemPractice = ItemPractice(cursor.getString(0),
+                    cursor.getString(1),
+                    cursor.getInt(2)
+                )
+            } while (cursor.moveToNext())
+        }
+        return itemPractice
+    }
+
 
     fun getMeaningsForItem () {
         // Clear global list of correct meanings
         ListCorrectMeanings.clear()
+        MEANINGSTOEVALUATE.clear()
         countMeaningsSelected = 0
 
         if (ListItemsVocabulary.size > 0) {
@@ -141,7 +163,7 @@ class TrainingActivity : AppCompatActivity() {
                     } else {
                         // there are not other meanings to start practicing
                         tvAreThereDataMeaningsTrain!!.text = "No hay Información para Practicar"
-                        btnNextItemTraining!!.text = "Salir"
+                        btnNextItemTraining!!.setEnabled(false)
                     }
                 } else {
                     // to follow to next item
@@ -155,13 +177,15 @@ class TrainingActivity : AppCompatActivity() {
         } else {
             // When there are not data in items vocabulary
             tvAreThereDataMeaningsTrain!!.text = "No Existen Palabras o Expresiones para Practicar"
-            btnNextItemTraining!!.text = "Salir"
+            btnNextItemTraining!!.setEnabled(false)
         }
     }
 
     fun chargeAdapterList(list: ArrayList<Meaning>) {
         meaningsSelected.clear()
+        AllMeaningsList.clear()
         MainLayout!!.removeAllViews()
+        ivCorrectAnswers!!.setVisibility(View.INVISIBLE)
         var i = 0
         list.forEach {
             val itemView = LayoutInflater.from(this).
@@ -173,60 +197,115 @@ class TrainingActivity : AppCompatActivity() {
             }
             MainLayout!!.addView(itemView)
             meaningsSelected.add(false)
+            AllMeaningsList.add(it)
             i++
         }
     }
 
     fun onClickItem(position: Int, view: View) {
-        // Toast.makeText(this, "Presiono $position", Toast.LENGTH_SHORT).show()
         if (!meaningsSelected[position]) {
             if (countMeaningsSelected < ListCorrectMeanings.size) {
                 countMeaningsSelected++
                 view.cvItemMeaningTraining.setCardBackgroundColor(Color.CYAN)
                 meaningsSelected[position] = true
+                MEANINGSTOEVALUATE.add(AllMeaningsList[position])
             } else {
                 Toast.makeText(this,
                 "Solo puede seleccionar ${ListCorrectMeanings.size} Opciones",
                 Toast.LENGTH_SHORT).show()
             }
-//            Toast.makeText(this, "selecciono $countMeaningsSelected", Toast.LENGTH_SHORT).show()
         } else {
+            // Delete item when is diselected
+            var indiceMeaning = -1
+            for ((index, item) in MEANINGSTOEVALUATE.withIndex()) {
+                if (AllMeaningsList[position].id_meaning == item.id_meaning) {
+                    indiceMeaning = index
+                }
+            }
+            if (indiceMeaning >= 0) MEANINGSTOEVALUATE.removeAt(indiceMeaning)
+            // Visual Changes
             view.cvItemMeaningTraining.setCardBackgroundColor(Color.WHITE)
             countMeaningsSelected--
             meaningsSelected[position] = false
-//            Toast.makeText(this, "selecciono $countMeaningsSelected", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun nextItemVocabulary (view: View) {
-         Toast.makeText(this, "PRESS $countMeaningsSelected", Toast.LENGTH_SHORT).show()
+        val timeToNext: Long = 1500
         if (countMeaningsSelected == ListCorrectMeanings.size) {
-//            Toast.makeText(this, "PROGRAAM", Toast.LENGTH_SHORT).show()
-
-
-
-
-            // Here TTT
+            if (IndiceItemVocabulary < (ListItemsVocabulary.size - 1)) {
+                btnNextItemTraining!!.setEnabled(false)
+                changesInDataPractice()
+                Handler().postDelayed({
+                    IndiceItemVocabulary++
+                    getMeaningsForItem()
+                    btnNextItemTraining!!.setEnabled(true)
+                }, timeToNext)
+            } else {
+                btnNextItemTraining!!.setEnabled(false)
+                changesInDataPractice()
+                Handler().postDelayed({
+                    finish()
+                }, timeToNext)
+            }
         } else {
             Toast.makeText(this,
                 "Falta Seleccionar Opciones",
                 Toast.LENGTH_SHORT).show()
         }
-
-        // logica para practica
-
-        /* TTT
-        if (IndiceItemVocabulary < (ListItemsVocabulary.size - 1)) {
-            IndiceItemVocabulary++
-            getMeaningsForItem()
-        } else {
-            finish()
-        }
-        */
-
-
     }
 
+    // This function makes logic that makes changes in DB when we practice
+    fun changesInDataPractice() {
+        // this varible get a boolean if we choice options correct or not
+        val isCorrect =
+            validateCorrectMeaningsSelected(ListCorrectMeanings, MEANINGSTOEVALUATE)
+        // if we choice correct options
+        if (isCorrect) {
+            // show correct image view
+            llContentAnswer!!.setVisibility(View.VISIBLE)
+            ivCorrectAnswers!!.setImageResource(R.drawable.ic_baseline_check_circle_24)
+            ivCorrectAnswers!!.setVisibility(View.VISIBLE)
+            tvAnswerIs!!.text = "Correcto"
+            // get data practice for this item vocabulary
+            val practiceItem =
+                getDataPracticeItem(ListItemsVocabulary[IndiceItemVocabulary].id_item)
 
-    // TODO COMMITEAR!!!!!!!!!!!!!!!!!
+            Toast.makeText(this,
+                "shots: ${practiceItem.shots + 1}", Toast.LENGTH_SHORT).show()
+
+            // if is the 5th time that we make correct options
+            if ((practiceItem.shots + 1) >= 5) {
+                // changes in DB shots in practice to 0 and this item will be marked as learned
+                db!!.updateDataItemPractice(ListItemsVocabulary[IndiceItemVocabulary].id_item, 0)
+                db!!.updateTypeItemVocabulary(ListItemsVocabulary[IndiceItemVocabulary].id_item, 1)
+            } else {
+                // if not only add 1 more time as correct practice
+                db!!.updateDataItemPractice(ListItemsVocabulary[IndiceItemVocabulary].id_item,
+                    (practiceItem.shots + 1))
+            }
+        } else {
+            // if not choice correct options
+            llContentAnswer!!.setVisibility(View.VISIBLE)
+            ivCorrectAnswers!!.setImageResource(R.drawable.ic_baseline_cancel_24)
+            ivCorrectAnswers!!.setVisibility(View.VISIBLE)
+            tvAnswerIs!!.text = "Incorrecto"
+            // Change shots to 0
+            db!!.updateDataItemPractice(ListItemsVocabulary[IndiceItemVocabulary].id_item, 0)
+        }
+    }
+
+    // This function compare two lists and validate if we selected correct options or not
+    fun validateCorrectMeaningsSelected (correctMeanings: ArrayList<Meaning>,
+                                         selectedMeanings: ArrayList<Meaning>) : Boolean {
+        if (correctMeanings.size != selectedMeanings.size) return false
+        else {
+            for (meaningSelected in selectedMeanings) {
+                if (!(meaningSelected in correctMeanings)) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
 }

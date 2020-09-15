@@ -63,7 +63,7 @@
                 android:textSize="@dimen/text_button_general"
                 android:layout_marginLeft="@dimen/left_right_general_margin"
                 android:layout_marginRight="@dimen/left_right_general_margin"
-                android:background="@color/colorSecundary"
+                android:background="@drawable/botonconfirm"
                 android:onClick="saveNewItemVocabulary"/>
 
             <Button
@@ -76,7 +76,7 @@
                 android:textSize="@dimen/text_button_general"
                 android:layout_marginLeft="@dimen/left_right_general_margin"
                 android:layout_marginRight="@dimen/left_right_general_margin"
-                android:background="@color/colorDanger"
+                android:background="@drawable/botoncancel"
                 android:onClick="cancel"/>
 
         </LinearLayout>

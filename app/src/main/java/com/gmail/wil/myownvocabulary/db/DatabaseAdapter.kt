@@ -87,6 +87,13 @@ class DatabaseAdapter(context: Context) {
         return db!!.update(Constants.ITEMS_VOCABULARY_TABLE, contentValues, "${Constants.VOCABULARY_ID_ITEM}=?", arrayOf(id))
     }
 
+    fun updateDataItemPractice(idItemVoc: String, shots: Int) : Int {
+        val contentValues = ContentValues()
+        contentValues.put(Constants.SHOTS, shots)
+        //necesario rescatar el id para que vaya en el where del update
+        return db!!.update(Constants.PRACTICE_TABLE, contentValues, "${Constants.PRACTICE_VOCABULARY_ID_ITEM}=?", arrayOf(idItemVoc))
+    }
+
     fun deleteItemVocabulary(id: String) : Boolean {
         //las condiciones del argumento del where se pueden concatenar para hacer mas flitro del query
         return db!!.delete(Constants.ITEMS_VOCABULARY_TABLE, "${Constants.VOCABULARY_ID_ITEM}='$id'", null) > 0
@@ -120,6 +127,17 @@ class DatabaseAdapter(context: Context) {
                     " FROM ${Constants.MEANINGS_TABLE} m INNER JOIN ${Constants.ITEMS_VOCABULARY_TABLE} i " +
                     " ON m.${Constants.MEANING_VOCABULARY_ID_ITEM} = i.${Constants.VOCABULARY_ID_ITEM} " +
                     " WHERE m.${Constants.MEANING_VOCABULARY_ID_ITEM} != '$idItemVocabulary' "
+        val data = db!!.rawQuery(query,null)
+        return data
+    }
+
+    fun getPracticeByItem(idItemVocabulary: String = "") : Cursor {
+        val query =
+            " SELECT p.${Constants.PRACTICE_ID}, i.${Constants.VOCABULARY_ID_ITEM}, " +
+                    " p.${Constants.SHOTS} " +
+                    " FROM ${Constants.PRACTICE_TABLE} p INNER JOIN ${Constants.ITEMS_VOCABULARY_TABLE} i " +
+                    " ON p.${Constants.PRACTICE_VOCABULARY_ID_ITEM} = i.${Constants.VOCABULARY_ID_ITEM} " +
+                    " WHERE p.${Constants.PRACTICE_VOCABULARY_ID_ITEM} = '$idItemVocabulary' "
         val data = db!!.rawQuery(query,null)
         return data
     }

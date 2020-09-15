@@ -143,7 +143,7 @@
             android:layout_gravity="center"
             android:drawableLeft="@drawable/ic_baseline_add_circle_white24"
             android:drawableTint="@color/colorWhite"
-            android:backgroundTint="@color/colorSemiSuccess"
+            android:backgroundTint="@color/colorSuccessSecundary"
             android:text="Adiconar otro significado"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
@@ -168,7 +168,7 @@
                 android:textSize="@dimen/text_button_general"
                 android:layout_marginLeft="@dimen/left_right_general_margin"
                 android:layout_marginRight="@dimen/left_right_general_margin"
-                android:background="@color/colorSecundary"
+                android:background="@drawable/botonconfirm"
                 android:onClick="saveAndFinish"/>
 
             <Button
@@ -181,7 +181,7 @@
                 android:textSize="@dimen/text_button_general"
                 android:layout_marginLeft="@dimen/left_right_general_margin"
                 android:layout_marginRight="@dimen/left_right_general_margin"
-                android:background="@color/colorDanger"
+                android:background="@drawable/botoncancel"
                 android:onClick="cancel"/>
 
         </LinearLayout>

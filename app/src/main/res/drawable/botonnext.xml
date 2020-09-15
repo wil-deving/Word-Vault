@@ -18,10 +18,10 @@
                 android:bottomRightRadius="0dp"
                 android:bottomLeftRadius="0dp"/>
             <solid
-                android:color="@color/colorSemiSuccess"/>
+                android:color="@color/colorSuccessSecundary"/>
             <stroke
-                android:color="@color/colorSecundary"
-                android:width="1dp"/>
+                android:color="@color/colorWhite"
+                android:width="0dp"/>
         </shape>
     </item>
     <!--En este item que es el normal (cuando no se lo esta oprimiendo)solo ponemos
@@ -34,7 +34,7 @@
                 android:bottomRightRadius="0dp"
                 android:bottomLeftRadius="0dp"/>
             <solid
-                android:color="@color/colorWhite"/>
+                android:color="@color/colorNextButton"/>
             <stroke
                 android:color="@color/colorBlack"
                 android:width="1dp"/>

@@ -4,11 +4,14 @@
     <color name="colorPrimaryDark">#e94822</color>
     <color name="colorAccent">#e84a5f</color>
 
-    <color name="colorPrimaryLight">#fff2e5</color>
     <color name="colorWhite">#fff</color>
     <color name="colorBlack">#000</color>
 
     <color name="colorSecundary">#3282b8</color>
-    <color name="colorSemiSuccess">#35d0ba</color>
-    <color name="colorDanger">#ec0101</color>
+    <color name="colorSuccess">#1192ee</color>
+    <color name="colorSuccessPressed">#3DA6F1</color>
+    <color name="colorSuccessSecundary">#66E890</color>
+    <color name="colorNextButton">#51AF6E</color>
+    <color name="colorDanger">#ff4b5c</color>
+    <color name="colorDangerPressedd">#F16875</color>
 </resources>

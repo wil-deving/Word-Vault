@@ -96,8 +96,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Siguiente"
-                android:textSize="@dimen/text_view_general"
-                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_view_title"
+                android:textColor="@color/colorWhite"
                 android:textAllCaps="false"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
@@ -108,83 +108,30 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/llContentAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/ivCorrectAnswers"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_baseline_check_circle_24"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/tvAnswerIs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Correcto"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_view_title"
+            android:textColor="@color/colorBlack"/>
+
+    </LinearLayout>
+
 </RelativeLayout>
-
-
-
-<!--<ScrollView android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android" >-->
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="vertical"-->
-<!--        xmlns:android="http://schemas.android.com/apk/res/android">-->
-
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Práctica por Significados"-->
-<!--            android:textSize="@dimen/text_view_title"-->
-<!--            android:textColor="@color/colorWhite"-->
-<!--            android:background="@color/colorPrimary"-->
-<!--            android:paddingTop="@dimen/padding_top_title"-->
-<!--            android:paddingBottom="@dimen/padding_bottom_title"-->
-<!--            android:paddingLeft="@dimen/padding_left_title"/>-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/llMainMeaningsTaining"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical" >-->
-
-<!--        </LinearLayout>-->
-
-<!--    </LinearLayout>-->
-
-<!--</ScrollView>-->
-
-
-
-
-
-<!--<androidx.coordinatorlayout.widget.CoordinatorLayout-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:id="@+id/coordinatorLayoutTraining"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:fitsSystemWindows="true"-->
-<!--    tools:context=".ui.TrainingActivity">-->
-
-<!--    <LinearLayout-->
-<!--        xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="@color/colorWhite"-->
-<!--        android:orientation="vertical">-->
-
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Práctica por Significados"-->
-<!--            android:textSize="@dimen/text_view_title"-->
-<!--            android:textColor="@color/colorWhite"-->
-<!--            android:background="@color/colorPrimary"-->
-<!--            android:paddingTop="@dimen/padding_top_title"-->
-<!--            android:paddingBottom="@dimen/padding_bottom_title"-->
-<!--            android:paddingLeft="@dimen/padding_left_title"-->
-<!--            />-->
-
-<!--        <ListView-->
-<!--            android:id="@+id/lvOptionsMeanings"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:divider="@null"-->
-<!--            android:layout_weight="1">-->
-<!--        </ListView>-->
-
-<!--    </LinearLayout>-->
-
-<!--</androidx.coordinatorlayout.widget.CoordinatorLayout>-->
