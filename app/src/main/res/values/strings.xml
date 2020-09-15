@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyOwnVocabulary</string>
+    <string name="app_name">MOV</string>
     <string-array name="dictionaries">
         <item>General</item>
         <item>Inglés</item>

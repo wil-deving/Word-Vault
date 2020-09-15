@@ -186,6 +186,7 @@ class TrainingActivity : AppCompatActivity() {
         AllMeaningsList.clear()
         MainLayout!!.removeAllViews()
         ivCorrectAnswers!!.setVisibility(View.INVISIBLE)
+        tvAnswerIs!!.setVisibility(View.INVISIBLE)
         var i = 0
         list.forEach {
             val itemView = LayoutInflater.from(this).
