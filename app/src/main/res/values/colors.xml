@@ -11,7 +11,7 @@
     <color name="colorSuccess">#1192ee</color>
     <color name="colorSuccessPressed">#3DA6F1</color>
     <color name="colorSuccessSecundary">#66E890</color>
-    <color name="colorNextButton">#51AF6E</color>
+    <color name="colorSuccessSecundaryPressed">#91E3AA</color>
     <color name="colorDanger">#ff4b5c</color>
     <color name="colorDangerPressedd">#F16875</color>
 </resources>

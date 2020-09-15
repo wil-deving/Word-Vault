@@ -88,7 +88,9 @@ class MeaningsListActivity : AppCompatActivity(), AdapterView.OnItemClickListene
                     meaning.original_description)
                 meaningsList.add(meaning)
             } while (cursor.moveToNext())
-            tvAreThereDataMeanings.setText("$numberMeaning Registros Encontrados")
+            var text = "${numberMeaning} Registros Encontrados"
+            if (numberMeaning == 1) text = "$numberMeaning Registro Encontrado"
+            tvAreThereDataMeanings.setText("$text")
             tvAreThereDataMeanings.setGravity(Gravity.RIGHT)
         } else {
             tvAreThereDataMeanings.setText("No se Encontaron Registros")

@@ -42,9 +42,9 @@ class ItemVocabularyFormActivity : AppCompatActivity() {
         if (etNewNameItemVocabulary!!.text.toString() != null &&
             etNewNameItemVocabulary!!.text.toString() != "") {
             createDialogSaveData("Actualización de Item",
-                "Está seguro de actualizar esta Palabra o Expresión?").show()
+                "Está seguro de Actualizar esta Palabra o Expresión?").show()
         } else {
-            Toast.makeText(this, "Debe llenar el campo", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Debe llenar el Campo", Toast.LENGTH_LONG).show()
         }
     }
 

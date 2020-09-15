@@ -153,9 +153,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         listItems.clear()
         adaptadorLista!!.eliminarTodo()
         if (list.size > 0) {
-            //tvAreThereData.setVisibility(View.VISIBLE)
-            //tvAreThereData.setGr
-            tvAreThereData.setText("${list.size} Registros Encontrados")
+            var text = "${list.size} Registros Encontrados"
+            if (list.size == 1) text = "${list.size} Registro Encontrado"
+            tvAreThereData.setText("$text")
             tvAreThereData.setGravity(Gravity.RIGHT)
             for (item in list) {
                 if (item.learned_item == 1) idResourceImage = R.drawable.ic_baseline_spellcheck_24
@@ -198,7 +198,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
             // Change an item from to learn to learned
             R.id.menu_send_item_voc_to_learn -> {
                 createDialogSaveData("Cambiar Item a No Aprendidos",
-                    "Está seguro de mover esta palabra o expresión a no aprendidos?",
+                    "Está seguro de mover esta Palabra o Expresión a No Aprendidos?",
                     "sendItemToLearn", listItems[index].id_item).show()
             }
             // Update an item
@@ -211,7 +211,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
             // Delete an item
             R.id.menu_eliminar_item_voc -> {
                 createDialogSaveData("Eliminar Item",
-                    "Está seguro de Eliminar esta palabra o expresión?",
+                    "Está seguro de Eliminar esta Palabra o Expresión?",
                     "deleteItem", listItems[index].id_item).show()
             }
         }

@@ -89,39 +89,39 @@ class AddMeaningActivity : AppCompatActivity() {
                 if (compareMeanings(descOriginalMeaning, descSecundaryMeaning)) {
                     val nameItemVoc = etNameItemVocabulary!!.text.toString()
                     if (!validateExistenceItemVocabulary(nameItemVoc)) {
-                        createDialogSaveData("Guardar nueva Palabra o Expresión",
-                            "Está seguro de guardar esta información?",
+                        createDialogSaveData("Guardar Nueva Palabra o Expresión",
+                            "Está Seguro de Guardar esta Información?",
                             true).show()
                     } else {
-                        showSnackBar("Esta palabra ya existe!")
+                        showSnackBar("Esta palabra ya Existe!")
                     }
                 } else {
-                    showSnackBar("Los Significados deben ser iguales o parecerse")
+                    showSnackBar("Los Significados deben ser Iguales o Parecerse")
                 }
             } else {
-                showSnackBar("Debe llenar los campos")
+                showSnackBar("Debe llenar los Campos")
             }
         } else {
             if (validateFieldNameItemVoc()) {
                 if (validateFieldsMeaning()) {
                     if (compareMeanings(descOriginalMeaning, descSecundaryMeaning)) {
                         if (EditionMeaning) {
-                            createDialogSaveData("Actualizar significado",
-                                "Está seguro de Actualizar esta información?",
+                            createDialogSaveData("Actualizar Significado",
+                                "Está Seguro de Actualizar esta Información?",
                                 true).show()
                         } else {
-                            createDialogSaveData("Guardar nuevo significado",
-                                "Está seguro de Guardar esta información?",
+                            createDialogSaveData("Guardar Nuevo Significado",
+                                "Está Seguro de Guardar esta Información?",
                                 true).show()
                         }
                     } else {
-                        showSnackBar("Los Significados deben ser iguales o parecerse")
+                        showSnackBar("Los Significados deben ser Iguales o Parecerse")
                     }
                 } else {
                     finish()
                 }
             } else {
-                showSnackBar("Debe llenar los campos")
+                showSnackBar("Debe llenar los Campos")
             }
         }
     }
@@ -135,29 +135,29 @@ class AddMeaningActivity : AppCompatActivity() {
                 if (compareMeanings(descOriginalMeaning, descSecundaryMeaning)) {
                     val nameItemVoc = etNameItemVocabulary!!.text.toString()
                     if (!validateExistenceItemVocabulary(nameItemVoc)) {
-                        createDialogSaveData("Guardar nueva Palabra o Expresión",
-                            "Está seguro de guardar esta información?",
+                        createDialogSaveData("Guardar Nueva Palabra o Expresión",
+                            "Está Seguro de Guardar esta Información?",
                             false).show()
                     } else {
-                        showSnackBar("Esta palabra ya existe!")
+                        showSnackBar("Esta palabra ya Existe!")
                     }
                 } else {
-                    showSnackBar("Los Significados deben ser iguales o parecerse")
+                    showSnackBar("Los Significados deben ser Iguales o Parecerse")
                 }
             } else {
-                showSnackBar("Debe llenar los campos")
+                showSnackBar("Debe llenar los Campos")
             }
         } else {
             if (validateFieldsMeaning()) {
                 if (compareMeanings(descOriginalMeaning, descSecundaryMeaning)) {
                     createDialogSaveData("Guardar nuevo significado",
-                        "Está seguro de guardar esta información?",
+                        "Está Seguro de Guardar esta Información?",
                         false).show()
                 } else {
-                    showSnackBar("Los Significados deben ser iguales o parecerse")
+                    showSnackBar("Los Significados deben ser Iguales o Parecerse")
                 }
             } else {
-                showSnackBar("Debe llenar los campos")
+                showSnackBar("Debe llenar los Campos")
             }
         }
     }
