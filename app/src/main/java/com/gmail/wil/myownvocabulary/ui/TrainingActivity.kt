@@ -192,6 +192,8 @@ class TrainingActivity : AppCompatActivity() {
         AllMeaningsList.clear()
         // Clear linear layout
         MainLayout!!.removeAllViews()
+        // show meanings list
+        scrMeanings!!.setVisibility(View.VISIBLE)
         // hide fields till user choice meanings
         ivCorrectAnswers!!.setVisibility(View.INVISIBLE)
         tvAnswerIs!!.setVisibility(View.INVISIBLE)
@@ -294,6 +296,8 @@ class TrainingActivity : AppCompatActivity() {
         // if we choice correct options
         if (isCorrect) {
             // show correct image view and text view
+            // and hide the meanings by now
+            scrMeanings!!.setVisibility(View.INVISIBLE)
             llContentAnswer!!.setVisibility(View.VISIBLE)
             ivCorrectAnswers!!.setImageResource(R.drawable.ic_baseline_check_circle_24)
             ivCorrectAnswers!!.setVisibility(View.VISIBLE)
@@ -314,6 +318,7 @@ class TrainingActivity : AppCompatActivity() {
             }
         } else {
             // if not choice correct options
+            scrMeanings!!.setVisibility(View.INVISIBLE)
             llContentAnswer!!.setVisibility(View.VISIBLE)
             ivCorrectAnswers!!.setImageResource(R.drawable.ic_baseline_cancel_24)
             ivCorrectAnswers!!.setVisibility(View.VISIBLE)

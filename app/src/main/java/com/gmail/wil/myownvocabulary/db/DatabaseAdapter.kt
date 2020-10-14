@@ -65,11 +65,12 @@ class DatabaseAdapter(context: Context) {
     }
 
     fun getItemsLookLike(nameInput: String = "") : Cursor {
+        val args = arrayOf("%$nameInput%")
         val query =
             " SELECT ${Constants.VOCABULARY_NAME_ITEM} " +
             " FROM ${Constants.ITEMS_VOCABULARY_TABLE} " +
-            " WHERE ${Constants.VOCABULARY_NAME_ITEM} LIKE '%$nameInput%' "
-        val data = db!!.rawQuery(query,null)
+            " WHERE ${Constants.VOCABULARY_NAME_ITEM} LIKE ? "
+        val data = db!!.rawQuery(query, args)
         return data
     }
 
@@ -143,14 +144,26 @@ class DatabaseAdapter(context: Context) {
     }
 
     fun getItemsVocabularyFiltered(filterType: String, textSearch: String): Cursor {
+        var args: Array<String>? = null
         var query =
-            " SELECT ${Constants.VOCABULARY_ID_ITEM}, ${Constants.VOCABULARY_NAME_ITEM}, " +
-            " ${Constants.VOCABULARY_LEARNED_ITEM} " +
-            " FROM  ${Constants.ITEMS_VOCABULARY_TABLE} "
+            " SELECT i.${Constants.VOCABULARY_ID_ITEM}, i.${Constants.VOCABULARY_NAME_ITEM}, " +
+            " i.${Constants.VOCABULARY_LEARNED_ITEM} " +
+            " FROM ${Constants.ITEMS_VOCABULARY_TABLE} i INNER JOIN ${Constants.MEANINGS_TABLE} m " +
+            " ON i.${Constants.VOCABULARY_ID_ITEM} = m.${Constants.MEANING_VOCABULARY_ID_ITEM} "
         if (filterType == "tolearn") query += " WHERE ${Constants.VOCABULARY_LEARNED_ITEM} = 0 "
         else if (filterType == "learned") query += " WHERE ${Constants.VOCABULARY_LEARNED_ITEM} = 1 "
-        if (textSearch != "") query += " AND ${Constants.VOCABULARY_NAME_ITEM} LIKE '%$textSearch%' "
-        val data = db!!.rawQuery(query,null)
+        // if (textSearch != "") query += " AND ${Constants.VOCABULARY_NAME_ITEM} LIKE '%$textSearch%' "
+        if (textSearch != "") {
+            query += " AND( i.${Constants.VOCABULARY_NAME_ITEM} LIKE ? "
+            query += " OR m.${Constants.MEANING_DESC_ONE} LIKE ? )"
+            args = arrayOf("%$textSearch%", "%$textSearch%")
+        }
+        // firstParameter.- Is the Query
+        // secondParameter.- Is an array of strings with [args] to match with each ? in Query
+        // the number types must be as string as well!!!!
+        // this array must be ordered according the ?, ?...
+        // (firstParameter, secondParameter)
+        val data = db!!.rawQuery(query, args)
         return data
     }
 

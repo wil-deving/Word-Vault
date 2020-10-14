@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         super.onStart()
         db!!.abrir()
         // it will start loading list items to learn
-        chargeAdapterList(getDataItems(FilterList))
+        chargeAdapterList(getDataItems(FilterList, TextSearched))
     }
 
     override fun onStop() {
