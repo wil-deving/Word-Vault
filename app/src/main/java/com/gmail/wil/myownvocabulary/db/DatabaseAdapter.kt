@@ -158,6 +158,7 @@ class DatabaseAdapter(context: Context) {
             query += " OR m.${Constants.MEANING_DESC_ONE} LIKE ? )"
             args = arrayOf("%$textSearch%", "%$textSearch%")
         }
+        query += " GROUP BY i.${Constants.VOCABULARY_ID_ITEM} "
         // firstParameter.- Is the Query
         // secondParameter.- Is an array of strings with [args] to match with each ? in Query
         // the number types must be as string as well!!!!
