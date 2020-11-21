@@ -74,9 +74,16 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
                 STATUS = false
             }
         }
-        // actions in sub buttons de FAB
+
+        // Fab to add new item vocabulary
         fab_new_word.setOnClickListener {
             val intent = Intent(this, AddMeaningActivity::class.java)
+            startActivity(intent)
+        }
+
+        // actions in sub buttons de FAB
+        fab_training_learned.setOnClickListener {
+            val intent = Intent(this, TrainingLearnedActivity::class.java)
             startActivity(intent)
         }
         fab_training.setOnClickListener {
@@ -250,12 +257,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
 
     // Functions to hide or show buttons of FAB
     private fun expandFAB() {
-        val layoutParams = fab_new_word.layoutParams as FrameLayout.LayoutParams
-        layoutParams.rightMargin += (fab_new_word.width * 0.25).toInt()
-        layoutParams.bottomMargin += (fab_new_word.height * 1.7).toInt()
-        fab_new_word.layoutParams = layoutParams
-        fab_new_word.startAnimation(show_fab_new_word)
-        fab_new_word.isClickable = true
+        val layoutParams = fab_training_learned.layoutParams as FrameLayout.LayoutParams
+        layoutParams.rightMargin += (fab_training_learned.width * 0.25).toInt()
+        layoutParams.bottomMargin += (fab_training_learned.height * 1.7).toInt()
+        fab_training_learned.layoutParams = layoutParams
+        fab_training_learned.startAnimation(show_fab_new_word)
+        fab_training_learned.isClickable = true
 
         val layoutParams2 = fab_training.layoutParams as FrameLayout.LayoutParams
         layoutParams2.rightMargin += (fab_training.width * 1.3).toInt()
@@ -266,12 +273,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
     }
 
     private fun hideFAB() {
-        val layoutParams = fab_new_word.layoutParams as FrameLayout.LayoutParams
-        layoutParams.rightMargin -= (fab_new_word.width * 0.25).toInt()
-        layoutParams.bottomMargin -= (fab_new_word.height * 1.7).toInt()
-        fab_new_word.layoutParams = layoutParams
-        fab_new_word.startAnimation(hide_fab_new_word)
-        fab_new_word.isClickable = false
+        val layoutParams = fab_training_learned.layoutParams as FrameLayout.LayoutParams
+        layoutParams.rightMargin -= (fab_training_learned.width * 0.25).toInt()
+        layoutParams.bottomMargin -= (fab_training_learned.height * 1.7).toInt()
+        fab_training_learned.layoutParams = layoutParams
+        fab_training_learned.startAnimation(hide_fab_new_word)
+        fab_training_learned.isClickable = false
 
         val layoutParams2 = fab_training.layoutParams as FrameLayout.LayoutParams
         layoutParams2.rightMargin -= (fab_training.width * 1.3).toInt()

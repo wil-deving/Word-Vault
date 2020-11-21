@@ -115,7 +115,7 @@
         android:id="@+id/fabMainOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_expand_less_24"
+        android:src="@drawable/weighting"
         android:tint="@color/colorWhite"
         android:backgroundTint="@color/colorPrimary"
         android:layout_gravity="bottom|right"
@@ -123,5 +123,16 @@
         />
 
     <include layout="@layout/fab_main_opt_layout"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_new_word"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_add_24"
+        android:tint="@color/colorWhite"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="18dp"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

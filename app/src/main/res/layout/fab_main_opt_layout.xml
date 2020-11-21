@@ -4,12 +4,12 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_new_word"
+        android:id="@+id/fab_training_learned"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_baseline_add_24"
+        android:src="@drawable/ic_baseline_done_all_24"
         android:tint="#FFF"
         android:visibility="invisible"
         app:backgroundTint="@color/colorPrimaryDark"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/weighting"
+        android:src="@drawable/ic_baseline_live_help_24"
         android:tint="#FFF"
         android:visibility="invisible"
         app:backgroundTint="@color/colorPrimaryDark"
