@@ -5,4 +5,11 @@
         <item>Inglés</item>
         <item>Informática</item>
     </string-array>
+    <string-array name="term_types">
+        <item>Common</item>
+        <item>Adjective</item>
+        <item>Noun</item>
+        <item>Phrasal Verb</item>
+        <item>Verb</item>
+    </string-array>
 </resources>

@@ -47,7 +47,7 @@
             android:layout_marginRight="@dimen/left_right_general_margin"
             />
 
-        <!-- When module dictionaries is finished
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,19 +64,20 @@
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"
-                android:text="Diccionario:"/>
+                android:text="Tipo de término:"/>
 
             <Spinner
+                android:id="@+id/spnTermType"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="10"
                 android:paddingTop="@dimen/padding_general_components"
                 android:paddingBottom="@dimen/padding_general_components"
-                android:entries="@array/dictionaries">
+                android:entries="@array/term_types">
             </Spinner>
 
         </LinearLayout>
-        -->
+
 
         <TextView
             android:layout_width="match_parent"
