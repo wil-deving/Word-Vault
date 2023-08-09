@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.gmail.wil.myownvocabulary.db.DatabaseAdapter
 import com.gmail.wil.myownvocabulary.R
 import com.gmail.wil.myownvocabulary.managers.compareMeanings
@@ -35,7 +34,7 @@ class AddMeaningActivity : AppCompatActivity() {
     // Variable that contains meaning's value if EditionMeaning will be true
     private var IdMeaningToUpdate = ""
 
-    private var termType = "Common"
+    private var meaningType = "Common"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +73,9 @@ class AddMeaningActivity : AppCompatActivity() {
             EditionMeaning = false
         }
         val spinner = findViewById<Spinner>(R.id.spnTermType)
-        val lista = arrayOf("Common", "Adjective", "Noun", "Phrasal Verb", "Verb")
-        termType = lista.first() // as default
+        val lista = arrayOf("Common", "Adjective", "Noun", "Phrasal Verb", "Verb",
+            "Adverb", "Preposition", "Conjunction", "Expression")
+        meaningType = lista.first() // as default
 
         if (spinner != null) {
             val adapter = ArrayAdapter( this, android.R.layout.simple_spinner_item, lista )
@@ -83,7 +83,7 @@ class AddMeaningActivity : AppCompatActivity() {
 
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    termType = lista[position]
+                    meaningType = lista[position]
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -153,7 +153,7 @@ class AddMeaningActivity : AppCompatActivity() {
     fun addAnotherMeaning (view: View) {
         val descOriginalMeaning = etDescOriginalMeaning!!.text.toString()
         val descSecundaryMeaning = etDescSecundaryMeaning!!.text.toString()
-        Toast.makeText(this, termType, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, meaningType, Toast.LENGTH_SHORT).show()
         if (FirstSaveItemVoc) {
             if (validateFieldNameItemVoc() && validateFieldsMeaning()) {
                 if (compareMeanings(descOriginalMeaning, descSecundaryMeaning)) {
@@ -211,7 +211,8 @@ class AddMeaningActivity : AppCompatActivity() {
         val descSecundaryMeaning = etDescSecundaryMeaning!!.text.toString()
         db!!.addMeaning(idNewMeaning, IdItemVoc,
             descOriginalMeaning,
-            descSecundaryMeaning)
+            descSecundaryMeaning,
+            meaningType)
     }
 
     // This method updates a meaning

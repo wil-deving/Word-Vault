@@ -1,7 +1,6 @@
 package com.gmail.wil.myownvocabulary.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.Gravity
@@ -9,11 +8,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.gmail.wil.myownvocabulary.R
 import com.gmail.wil.myownvocabulary.db.DatabaseAdapter
 import com.gmail.wil.myownvocabulary.listsAdapter.MeaningsListAdapter
 import com.gmail.wil.myownvocabulary.model.Meaning
-import kotlinx.android.synthetic.main.activity_meanings_list.*
+import kotlinx.android.synthetic.main.activity_meanings_list.fabAddNewMeaning
+import kotlinx.android.synthetic.main.activity_meanings_list.lvMeaningsList
+import kotlinx.android.synthetic.main.activity_meanings_list.tvAreThereDataMeanings
+import kotlinx.android.synthetic.main.activity_meanings_list.tvNameItemInListMeanings
 
 class MeaningsListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
@@ -84,8 +87,9 @@ class MeaningsListActivity : AppCompatActivity(), AdapterView.OnItemClickListene
                     cursor.getString(2),
                     cursor.getString(3)
                 )
+                val shortMeaningType = getShortType(cursor.getString(4))
                 adaptadorLista!!.adicionarItem(numberMeaning.toString(),
-                    meaning.original_description)
+                    "${shortMeaningType}. ${meaning.original_description}")
                 meaningsList.add(meaning)
             } while (cursor.moveToNext())
             var text = "${numberMeaning} Registros Encontrados"
@@ -151,5 +155,20 @@ class MeaningsListActivity : AppCompatActivity(), AdapterView.OnItemClickListene
             // Toast.makeText(this, "Click en cancelar", Toast.LENGTH_SHORT).show()
         }
         return alertDialog.create()
+    }
+
+    private fun getShortType(type: String): String {
+        when (type) {
+            "Common" -> return "com"
+            "Adjective" -> return "adj"
+            "Noun" -> return "n"
+            "Phrasal Verb" -> return "PHR V"
+            "Verb" -> return "v"
+            "Adverb" -> return "adv"
+            "Preposition" -> return "prep"
+            "Conjunction" -> return "con"
+            "Expression" -> return "exp"
+        }
+        return "S/T"
     }
 }

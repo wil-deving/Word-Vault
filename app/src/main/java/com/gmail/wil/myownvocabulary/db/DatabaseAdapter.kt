@@ -41,12 +41,13 @@ class DatabaseAdapter(context: Context) {
     }
 
     fun addMeaning(idMeaning: String, idItemVocabulary: String,
-                   descOne: String, descTwo: String) : Long {
+                   descOne: String, descTwo: String, type: String) : Long {
         val contentValues = ContentValues()
         contentValues.put(Constants.MEANING_ID, idMeaning)
         contentValues.put(Constants.MEANING_VOCABULARY_ID_ITEM, idItemVocabulary)
         contentValues.put(Constants.MEANING_DESC_ONE, descOne)
         contentValues.put(Constants.MEANING_DESC_TWO, descTwo)
+        contentValues.put(Constants.MEANING_TYPE, type)
         return db!!.insert(Constants.MEANINGS_TABLE, null, contentValues)
     }
 
@@ -113,7 +114,8 @@ class DatabaseAdapter(context: Context) {
     fun getMeaningsByItem(idItemVocabulary: String = "") : Cursor {
         val query =
             " SELECT m.${Constants.MEANING_ID}, i.${Constants.VOCABULARY_ID_ITEM}, " +
-            " m.${Constants.MEANING_DESC_ONE}, m.${Constants.MEANING_DESC_TWO} " +
+            " m.${Constants.MEANING_DESC_ONE}, m.${Constants.MEANING_DESC_TWO}, " +
+            " m.${Constants.MEANING_TYPE} " +
             " FROM ${Constants.MEANINGS_TABLE} m INNER JOIN ${Constants.ITEMS_VOCABULARY_TABLE} i " +
             " ON m.${Constants.MEANING_VOCABULARY_ID_ITEM} = i.${Constants.VOCABULARY_ID_ITEM} " +
             " WHERE m.${Constants.MEANING_VOCABULARY_ID_ITEM} = '$idItemVocabulary' "
@@ -186,7 +188,8 @@ class DatabaseAdapter(context: Context) {
                     "${Constants.MEANING_ID} TEXT PRIMARY KEY, " +
                     "${Constants.MEANING_VOCABULARY_ID_ITEM} TEXT NOT NULL, " +
                     "${Constants.MEANING_DESC_ONE} TEXT NOT NULL, " +
-                    "${Constants.MEANING_DESC_TWO} TEXT NOT NULL )"
+                    "${Constants.MEANING_DESC_TWO} TEXT NOT NULL, " +
+                    "${Constants.MEANING_TYPE} TEXT NOT NULL )"
             )
             db.execSQL(
                 "CREATE TABLE ${Constants.PRACTICE_TABLE} (" +
