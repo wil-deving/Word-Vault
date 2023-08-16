@@ -52,10 +52,11 @@ class DatabaseAdapter(context: Context) {
     }
 
     fun updateMeaning(idMeaning: String, idItemVoc: String, descOrigin: String,
-                      descSecundary: String) : Int {
+                      descSecundary: String, type: String) : Int {
         val contentValues = ContentValues()
         contentValues.put(Constants.MEANING_DESC_ONE, descOrigin)
         contentValues.put(Constants.MEANING_DESC_TWO, descSecundary)
+        contentValues.put(Constants.MEANING_TYPE, type)
         //necesario rescatar el id para que vaya en el where del update
         return db!!.update(Constants.MEANINGS_TABLE, contentValues, "${Constants.MEANING_ID}=?", arrayOf(idMeaning))
     }

@@ -46,6 +46,26 @@ class AddMeaningActivity : AppCompatActivity() {
         // to connect to DB
         db = DatabaseAdapter(this)
 
+        val spinner = findViewById<Spinner>(R.id.spnTermType)
+        val lista = arrayOf("Common", "Adjective", "Noun", "Phrasal Verb", "Verb",
+            "Adverb", "Preposition", "Conjunction", "Expression")
+        meaningType = lista.first() // as default
+
+        if (spinner != null) {
+            val adapter = ArrayAdapter( this, android.R.layout.simple_spinner_item, lista)
+            spinner.adapter = adapter
+
+            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                    meaningType = lista[position]
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                }
+            }
+        }
+
         if (intent.extras != null) {
             // Is intent from List meanings or
             val addNewMeaningFromList = intent.getBooleanExtra("new_meaning",
@@ -63,33 +83,20 @@ class AddMeaningActivity : AppCompatActivity() {
                 val idMeaning = intent.getStringExtra("id_meaning")
                 val originDescMeaning = intent.getStringExtra("desc_original")
                 val secundaryDescMeaning = intent.getStringExtra("desc_secundary")
+                val meaningTypeToUpdate = intent.getStringExtra("meaning_type")
+                val positionItemMeaningType = lista.indexOf(meaningTypeToUpdate)
                 etDescOriginalMeaning.setText(originDescMeaning)
                 etDescSecundaryMeaning.setText(secundaryDescMeaning)
+                if (positionItemMeaningType != -1) {
+                    spinner.setSelection(positionItemMeaningType)
+                    meaningType = meaningTypeToUpdate
+                }
                 IdMeaningToUpdate = idMeaning
             }
             // If addNewMeaningFromList is true will keep normal flow
         } else {
             // It is to new Data
             EditionMeaning = false
-        }
-        val spinner = findViewById<Spinner>(R.id.spnTermType)
-        val lista = arrayOf("Common", "Adjective", "Noun", "Phrasal Verb", "Verb",
-            "Adverb", "Preposition", "Conjunction", "Expression")
-        meaningType = lista.first() // as default
-
-        if (spinner != null) {
-            val adapter = ArrayAdapter( this, android.R.layout.simple_spinner_item, lista )
-            spinner.adapter = adapter
-
-            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    meaningType = lista[position]
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-
-                }
-            }
         }
     }
 
@@ -221,7 +228,8 @@ class AddMeaningActivity : AppCompatActivity() {
         val descSecundaryMeaning = etDescSecundaryMeaning!!.text.toString()
         db!!.updateMeaning(IdMeaningToUpdate, IdItemVoc,
             descOriginalMeaning,
-            descSecundaryMeaning)
+            descSecundaryMeaning,
+            meaningType)
     }
 
     // This method creates a dialog
@@ -335,6 +343,8 @@ class AddMeaningActivity : AppCompatActivity() {
         if (origin == "addAnotherMeaning") {
             etDescOriginalMeaning.setText("")
             etDescSecundaryMeaning.setText("")
+            spnTermType.setSelection(0)
+            meaningType = "Common"
         }
     }
 

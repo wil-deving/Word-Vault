@@ -85,7 +85,8 @@ class MeaningsListActivity : AppCompatActivity(), AdapterView.OnItemClickListene
                 val meaning = Meaning(cursor.getString(0),
                     cursor.getString(1),
                     cursor.getString(2),
-                    cursor.getString(3)
+                    cursor.getString(3),
+                    cursor.getString(4)
                 )
                 val shortMeaningType = getShortType(cursor.getString(4))
                 adaptadorLista!!.adicionarItem(numberMeaning.toString(),
@@ -108,6 +109,7 @@ class MeaningsListActivity : AppCompatActivity(), AdapterView.OnItemClickListene
         intent.putExtra("id_meaning", meaningsList[i].id_meaning)
         intent.putExtra("desc_original", meaningsList[i].original_description)
         intent.putExtra("desc_secundary", meaningsList[i].secundary_description)
+        intent.putExtra("meaning_type", meaningsList[i].meaningType)
         intent.putExtra("id_item_vocabulary", IdItemVocabulary)
         intent.putExtra("name_item_vocabulary", NameItemVocabulary)
         intent.putExtra("new_meaning", false)
